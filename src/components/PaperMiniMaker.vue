@@ -4,24 +4,15 @@
       <v-container fluid>
         <v-row>
           <v-col cols="6" md="4" class="no-print">
+            <h3>Image</h3>
             <v-text-field v-model="imageUrl" label="Image URL"></v-text-field>
+            <v-select label="Size" v-model="size"
+              :items="sizes"  :item-props="itemProps"></v-select>
+            <h3>Text</h3>
             <v-text-field v-model="name" label="Name"></v-text-field>
-            
-            <v-switch
-              v-model="numbered"
-              label="Numbered"
-              hide-details
-            ></v-switch>
-            <p>Copies: {{ copies }}</p>
+            <v-switch v-model="numbered" label="Numbered" hide-details></v-switch>
+            <h3>Copies</h3>
             <v-slider v-model="copies" :min="1" :max="20" :step="1" thumb-label></v-slider>
-            <p>Size: {{ size }}</p>
-            <v-radio-group v-model="size">
-              <v-radio label="Tiny" value="tiny"></v-radio>
-              <v-radio label="Medium/Small" value="medium"></v-radio>
-              <v-radio label="Large" value="large"></v-radio>
-              <v-radio label="Huge" value="huge"></v-radio>
-              <v-radio label="Gargantuan" value="gargantuan"></v-radio>
-            </v-radio-group>
             <p>Border style: {{ borderStyle }}</p>
             <v-radio-group v-model="borderStyle">
               <v-radio label="solid" value="solid"></v-radio>
@@ -30,18 +21,24 @@
             </v-radio-group>
             <p>Border width: {{ borderWidth }}</p>
             <v-slider v-model="borderWidth" :min="0" :max="5" :step="1" thumb-label></v-slider>
+            <h1>Base</h1>
+            <v-color-picker v-model="baseBackgroundColour" hide-inputs show-swatches></v-color-picker>
           </v-col>
           <v-col cols="12" md="4" class="d-flex justify-center align-center">
             <div v-for="(item, index) in copies" :key="index" style="float: left;">
               <div :style="`${tokenStyle} ${baseStyle}`" :class="`${size} ${size}-half-base`">
-                <div v-if="name" class="rotated" >{{name}}</div><div v-else>&nbsp;</div>
-                <div v-if="numbered" class="rotated" >{{index+1}}</div><div v-else>&nbsp;</div>
+                <div v-if="name" class="rotated">{{ name }}</div>
+                <div v-else>&nbsp;</div>
+                <div v-if="numbered" class="rotated">{{ index + 1 }}</div>
+                <div v-else>&nbsp;</div>
               </div>
               <v-img :style="tokenStyle" :class="`${size} flip-vertical`" :src="`${imageUrl}`" />
               <v-img :style="tokenStyle" :class="`${size}`" :src="`${imageUrl}`" />
               <div :style="`${tokenStyle} ${baseStyle}`" :class="`${size} ${size}-half-base`">
-                <span v-if="numbered">{{index+1}}</span><div v-else>&nbsp;</div>
-                <div v-if="name">{{name}}</div><div v-else>&nbsp;</div>
+                <span v-if="numbered">{{ index + 1 }}</span>
+                <div v-else>&nbsp;</div>
+                <div v-if="name">{{ name }}</div>
+                <div v-else>&nbsp;</div>
               </div>
               <div :style="tokenStyle" :class="`${size} ${size}-base`"></div>
             </div>
@@ -65,10 +62,11 @@
   .no-print * {
     display: none !important;
   }
+
   .v-content {
-      padding: 0 !important;
+    padding: 0 !important;
   }
-  
+
   @page {
     /* size: landscape */
   }
@@ -79,9 +77,11 @@
 .tiny {
   width: 0.5in;
 }
+
 .tiny-half-base {
   height: 0.25in;
 }
+
 .tiny-base {
   height: 0.5in;
 }
@@ -89,9 +89,11 @@
 .small {
   width: 1in;
 }
+
 .small-half-base {
   height: 0.5in;
 }
+
 .small-base {
   height: 1in;
 }
@@ -123,9 +125,11 @@
 .huge {
   width: 3in;
 }
+
 .huge-half-base {
   height: 1.5in;
 }
+
 .huge-base {
   height: 3in;
 }
@@ -133,9 +137,11 @@
 .gargantuan {
   width: 4in;
 }
+
 .gargantuan-half-base {
   height: 2in;
 }
+
 .gargantuan-base {
   height: 4in;
 }
@@ -170,7 +176,34 @@ export default defineComponent({
     borderWidth: 1,
     baseBackgroundType: "solid",
     baseBackgroundColour: "lightgrey",
-    numbered: true
+    numbered: true,
+    sizes: [
+      {
+        title: "Tiny",
+        value: "tiny",
+        subtitle: "1/2 inch"
+      },
+      {
+        title: "Small/Medium",
+        value: "medium",
+        subtitle: "1 inch"
+      },
+      {
+        title: "Large",
+        value: "large",
+        subtitle: "2 inches"
+      },
+      {
+        title: "Huge",
+        value: "huge",
+        subtitle: "3 inches"
+      },
+      {
+        title: "Gargantuan",
+        value: "gargantuan",
+        subtitle: "4 inches"
+      }
+    ]
   }),
   computed: {
     tokenStyle() {
@@ -185,6 +218,13 @@ export default defineComponent({
       }
     }
   },
-
+  methods: {
+      itemProps (item: any) {
+        return {
+          title: item.title,
+          subtitle: item.subtitle,
+        }
+      },
+    },
 })
 </script>
