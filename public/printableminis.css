@@ -1,0 +1,103 @@
+@media print {
+
+  body {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    margin:0 auto;
+    text-align: center;
+    vertical-align: middle;
+  }
+
+  @page {
+    margin: 0.5in 0.5in;
+  }
+}
+
+.token {}
+
+.tiny {
+  width: 0.5in;
+}
+
+.tiny-half-base {
+  height: 0.25in;
+}
+
+.tiny-base {
+  height: 0.5in;
+}
+
+.small {
+  width: 1in;
+}
+
+.small-half-base {
+  height: 0.5in;
+}
+
+.small-base {
+  height: 1in;
+}
+
+.medium {
+  width: 1in;
+}
+
+.medium-half-base {
+  height: 0.5in;
+}
+
+.medium-base {
+  height: 1in;
+}
+
+.large {
+  width: 2in;
+}
+
+.large-half-base {
+  height: 1in;
+}
+
+.large-base {
+  height: 2in;
+}
+
+.huge {
+  width: 3in;
+}
+
+.huge-half-base {
+  height: 1.5in;
+}
+
+.huge-base {
+  height: 3in;
+}
+
+.gargantuan {
+  width: 4in;
+}
+
+.gargantuan-half-base {
+  height: 2in;
+}
+
+.gargantuan-base {
+  height: 4in;
+}
+
+.flip-horizontal {
+  -webkit-transform: scaleX(-1);
+  transform: scaleX(-1);
+}
+
+.flip-vertical {
+  -webkit-transform: scaleY(-1);
+  transform: scaleY(-1);
+}
+
+.rotated {
+  -webkit-transform: rotate(180deg);
+  transform: rotate(180deg);
+}

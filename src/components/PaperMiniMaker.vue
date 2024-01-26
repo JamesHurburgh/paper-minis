@@ -64,7 +64,32 @@
                       Base
                     </v-expansion-panel-title>
                     <v-expansion-panel-text>
-                      <v-color-picker v-model="baseBackgroundColour" hide-inputs show-swatches></v-color-picker>
+                      <v-btn color="primary">Background Colour
+                        <v-dialog v-model="baseBackgroundColourDialog" activator="parent" width="auto">
+                          <v-card>
+                            <v-card-title>
+                              <span class="text-h5">Select base colour</span>
+                            </v-card-title>
+                            <v-card-text>
+                              <v-color-picker v-model="baseBackgroundColour" hide-inputs show-swatches></v-color-picker>
+                            </v-card-text>
+                            <v-card-actions>
+                              <v-btn color="primary" block @click="baseBackgroundColourDialog = false">Close
+                                Dialog</v-btn>
+                            </v-card-actions>
+                          </v-card>
+                        </v-dialog>
+                      </v-btn>
+                    </v-expansion-panel-text>
+                  </v-expansion-panel>
+                  <v-expansion-panel key="Base">
+                    <v-expansion-panel-title>
+                      Page Setup
+                    </v-expansion-panel-title>
+                    <v-expansion-panel-text>
+                      <v-select label="Page orientation" v-model="pageOrientation" :items="pageOrientations"></v-select>
+                      <v-select label="Page size" v-model="pageSize" :items="pageSizes"
+                        :item-props="pageSizeProp"></v-select>
                     </v-expansion-panel-text>
                   </v-expansion-panel>
                 </v-expansion-panels>
@@ -111,119 +136,22 @@
     </v-responsive>
   </v-container>
 </template>
-<style scoped>
-@media print {
-
-  body {
-    -webkit-print-color-adjust: exact !important;
-    print-color-adjust: exact !important;
-  }
-
-  .no-print,
-  .no-print * {
-    display: none !important;
-  }
-
-  .v-content {
-    padding: 0 !important;
-  }
-
-  @page {
-    /* size: landscape */
-  }
-}
-
-.token {}
-
-.tiny {
-  width: 0.5in;
-}
-
-.tiny-half-base {
-  height: 0.25in;
-}
-
-.tiny-base {
-  height: 0.5in;
-}
-
-.small {
-  width: 1in;
-}
-
-.small-half-base {
-  height: 0.5in;
-}
-
-.small-base {
-  height: 1in;
-}
-
-.medium {
-  width: 1in;
-}
-
-.medium-half-base {
-  height: 0.5in;
-}
-
-.medium-base {
-  height: 1in;
-}
-
-.large {
-  width: 2in;
-}
-
-.large-half-base {
-  height: 1in;
-}
-
-.large-base {
-  height: 2in;
-}
-
-.huge {
-  width: 3in;
-}
-
-.huge-half-base {
-  height: 1.5in;
-}
-
-.huge-base {
-  height: 3in;
-}
-
-.gargantuan {
-  width: 4in;
-}
-
-.gargantuan-half-base {
-  height: 2in;
-}
-
-.gargantuan-base {
-  height: 4in;
-}
-
-.flip-horizontal {
-  -webkit-transform: scaleX(-1);
-  transform: scaleX(-1);
-}
-
-.flip-vertical {
-  -webkit-transform: scaleY(-1);
-  transform: scaleY(-1);
-}
-
-.rotated {
-  -webkit-transform: rotate(180deg);
-  transform: rotate(180deg);
-}
-</style>
 <script lang="ts">
 import { defineComponent } from 'vue'
+import { usePaperizer } from 'paperizer'
+const printableMinisCssPath = "./printableminis.css"
+var cssId = printableMinisCssPath;  // you could encode the css path itself to generate id..
+if (!document.getElementById(cssId)) {
+  var head = document.getElementsByTagName('head')[0];
+  var link = document.createElement('link');
+  link.id = cssId;
+  link.rel = 'stylesheet';
+  link.type = 'text/css';
+  link.href = printableMinisCssPath;
+  link.media = 'all';
+  head.appendChild(link);
+}
+
 export default defineComponent({
   name: 'PaperMiniMaker}',
 
@@ -236,6 +164,7 @@ export default defineComponent({
     borderWidth: 1,
     baseBackgroundType: "solid",
     baseBackgroundColour: "lightgrey",
+    baseBackgroundColourDialog: false,
     numbered: true,
     startNumber: 1,
     sizes: [
@@ -264,6 +193,32 @@ export default defineComponent({
         value: "gargantuan",
         subtitle: "4 inches"
       }
+    ],
+    pageOrientations: [
+      "portrait",
+      "landscape"
+    ],
+    pageOrientation: "portrait",
+    pageSize: "A4",
+    pageSizes: [
+      {
+        name: "A4",
+        value: "A4",
+        width: "8.3",
+        height: "11.7"
+      },
+      // {
+      //   name: "A3",
+      //   value: "A3",
+      //   width: "11.7",
+      //   height: "16.5"
+      // },
+      {
+        name: "Letter",
+        value: "Letter",
+        width: "8.5",
+        height: "11"
+      }
     ]
   }),
   computed: {
@@ -286,9 +241,22 @@ export default defineComponent({
         subtitle: item.subtitle,
       }
     },
+    pageSizeProp(item: any) {
+      return {
+        title: item.name,
+        subtitle: this.pageOrientation == "portrait" ? `${item.width}" x ${item.height}"` : `${item.height}" x ${item.width}"`
+      }
+    },
     print() {
-      print()
-      // this.$paperize('print-me', { styles: ["https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css"] })
+      const { paperize } = usePaperizer('print-me', {
+        styles: [
+          'https://cdn.jsdelivr.net/npm/vuetify@3.0.5/dist/vuetify.min.css',
+          printableMinisCssPath,
+          `./pages/${this.pageSize}.${this.pageOrientation}.css`
+        ],
+        autoClose: true
+      })
+      paperize()
     }
   },
 })
