@@ -11,10 +11,12 @@ import router from '../router'
 
 // Types
 import type { App } from 'vue'
+import Paperizer from 'paperizer'
 
 export function registerPlugins (app: App) {
   loadFonts()
   app
     .use(vuetify)
     .use(router)
+    .use(Paperizer)
 }

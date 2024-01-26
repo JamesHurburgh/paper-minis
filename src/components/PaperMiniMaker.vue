@@ -8,6 +8,9 @@
               <template v-slot:title>
                 Settings
               </template>
+              <template v-slot:append>
+                <v-btn prepend-icon="mdi-printer" @click="print">Print</v-btn>
+              </template>
               <v-card-subtitle>
                 Adjust values here to change what the paper minis will look like.
               </v-card-subtitle>
@@ -53,31 +56,32 @@
             </v-card>
           </v-col>
           <v-col md="6" class="justify-center">
-            <v-card prepend-icon="mdi-image">
+            <v-card flat>
               <template v-slot:title>
-                Preview
+                <span class="no-print">
+                  <v-icon icon="mdi-image" size="small"></v-icon>
+                  Preview
+                </span>
               </template>
-              <v-card-subtitle>
+              <v-card-subtitle class="no-print">
                 This preview shows what the paper minis may look like.
               </v-card-subtitle>
 
               <v-card-text>
-                <div v-for="(item, index) in copies" :key="index" style="float: left;" class="align-center text-center">
-                  <div :style="`${tokenStyle} ${baseStyle}`" :class="`${size} ${size}-half-base`">
-                    <div v-if="name" class="rotated">{{ name }}</div>
-                    <div v-else>&nbsp;</div>
-                    <div v-if="numbered" class="rotated">{{ index + 1 }}</div>
-                    <div v-else>&nbsp;</div>
+                <div id="print-me">
+                  <div v-for="(item, index) in copies" :key="index" style="float: left;" class="align-center text-center">
+                    <div :style="`${tokenStyle} ${baseStyle}`" :class="`${size} ${size}-half-base`">
+                      <div v-if="numbered" class="rotated">{{ index + 1 }}</div><div v-else>&nbsp;</div>
+                      <div v-if="name" class="rotated">{{ name }}</div><div v-else>&nbsp;</div>
+                    </div>
+                    <v-img :style="tokenStyle" :class="`${size} flip-vertical`" :src="`${imageUrl}`" />
+                    <v-img :style="tokenStyle" :class="`${size}`" :src="`${imageUrl}`" />
+                    <div :style="`${tokenStyle} ${baseStyle}`" :class="`${size} ${size}-half-base`">
+                      <div v-if="name">{{ name }}</div><div v-else>&nbsp;</div>
+                      <div v-if="numbered">{{ index + 1 }}</div><div v-else>&nbsp;</div>
+                    </div>
+                    <div :style="tokenStyle" :class="`${size} ${size}-base`"></div>
                   </div>
-                  <v-img :style="tokenStyle" :class="`${size} flip-vertical`" :src="`${imageUrl}`" />
-                  <v-img :style="tokenStyle" :class="`${size}`" :src="`${imageUrl}`" />
-                  <div :style="`${tokenStyle} ${baseStyle}`" :class="`${size} ${size}-half-base`">
-                    <span v-if="numbered">{{ index + 1 }}</span>
-                    <div v-else>&nbsp;</div>
-                    <div v-if="name">{{ name }}</div>
-                    <div v-else>&nbsp;</div>
-                  </div>
-                  <div :style="tokenStyle" :class="`${size} ${size}-base`"></div>
                 </div>
               </v-card-text>
             </v-card>
@@ -200,14 +204,13 @@
 </style>
 <script lang="ts">
 import { defineComponent } from 'vue'
-import VueHtmlToPaper from 'VueHtmlToPaper.vue'
 export default defineComponent({
   name: 'PaperMiniMaker}',
 
   data: () => ({
     imageUrl: "https://www.dndbeyond.com/avatars/thumbnails/30783/955/1000/1000/638062024584880857.png",
     name: "Goblin",
-    copies: 4,
+    copies: 14,
     size: "medium",
     borderStyle: "solid",
     borderWidth: 1,
@@ -262,6 +265,10 @@ export default defineComponent({
         subtitle: item.subtitle,
       }
     },
+    print() {
+      print()
+      // this.$paperize('print-me', { styles: ["https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css"] })
+    }
   },
 })
 </script>
