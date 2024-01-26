@@ -24,11 +24,27 @@
                     <v-select label="Size" v-model="size" :items="sizes" :item-props="itemProps"></v-select>
                   </v-col>
                 </v-row>
-                <h3>Text</h3>
-                <v-text-field v-model="name" label="Name"></v-text-field>
-                <v-switch v-model="numbered" label="Numbered" hide-details></v-switch>
                 <v-slider label="Copies" v-model="copies" :min="1" :max="20" :step="1" thumb-label></v-slider>
                 <v-expansion-panels>
+                  <v-expansion-panel key="Label">
+                    <v-expansion-panel-title>
+                      Label
+                    </v-expansion-panel-title>
+                    <v-expansion-panel-text>
+                      <v-row>
+                        <v-col md="6">
+                          <v-text-field v-model="name" label="Name"></v-text-field>
+                        </v-col>
+                        <v-col md="3">
+                          <v-switch v-model="numbered" label="Numbered"></v-switch>
+                        </v-col>
+                        <v-col md="3">
+                          <v-text-field v-if="numbered" v-model="startNumber" persistent-hint hint="Start Number"
+                            single-line type="number" />
+                        </v-col>
+                      </v-row>
+                    </v-expansion-panel-text>
+                  </v-expansion-panel>
                   <v-expansion-panel key="Border">
                     <v-expansion-panel-title>
                       Border
@@ -71,14 +87,18 @@
                 <div id="print-me">
                   <div v-for="(item, index) in copies" :key="index" style="float: left;" class="align-center text-center">
                     <div :style="`${tokenStyle} ${baseStyle}`" :class="`${size} ${size}-half-base`">
-                      <div v-if="numbered" class="rotated">{{ index + 1 }}</div><div v-else>&nbsp;</div>
-                      <div v-if="name" class="rotated">{{ name }}</div><div v-else>&nbsp;</div>
+                      <div v-if="numbered" class="rotated">{{ index + Number(startNumber) }}</div>
+                      <div v-else>&nbsp;</div>
+                      <div v-if="name" class="rotated">{{ name }}</div>
+                      <div v-else>&nbsp;</div>
                     </div>
                     <v-img :style="tokenStyle" :class="`${size} flip-vertical`" :src="`${imageUrl}`" />
                     <v-img :style="tokenStyle" :class="`${size}`" :src="`${imageUrl}`" />
                     <div :style="`${tokenStyle} ${baseStyle}`" :class="`${size} ${size}-half-base`">
-                      <div v-if="name">{{ name }}</div><div v-else>&nbsp;</div>
-                      <div v-if="numbered">{{ index + 1 }}</div><div v-else>&nbsp;</div>
+                      <div v-if="name">{{ name }}</div>
+                      <div v-else>&nbsp;</div>
+                      <div v-if="numbered">{{ index + Number(startNumber) }}</div>
+                      <div v-else>&nbsp;</div>
                     </div>
                     <div :style="tokenStyle" :class="`${size} ${size}-base`"></div>
                   </div>
@@ -217,6 +237,7 @@ export default defineComponent({
     baseBackgroundType: "solid",
     baseBackgroundColour: "lightgrey",
     numbered: true,
+    startNumber: 1,
     sizes: [
       {
         title: "Tiny",
