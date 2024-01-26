@@ -11,17 +11,16 @@
             <h3>Text</h3>
             <v-text-field v-model="name" label="Name"></v-text-field>
             <v-switch v-model="numbered" label="Numbered" hide-details></v-switch>
-            <h3>Copies</h3>
-            <v-slider v-model="copies" :min="1" :max="20" :step="1" thumb-label></v-slider>
-            <p>Border style: {{ borderStyle }}</p>
+            <v-slider label="Copies" v-model="copies" :min="1" :max="20" :step="1" thumb-label></v-slider>
+            <h3>Border</h3>
+            <p>Style: {{ borderStyle }}</p>
             <v-radio-group v-model="borderStyle">
               <v-radio label="solid" value="solid"></v-radio>
               <v-radio label="dashed" value="dashed"></v-radio>
               <v-radio label="dotted" value="dotted"></v-radio>
             </v-radio-group>
-            <p>Border width: {{ borderWidth }}</p>
-            <v-slider v-model="borderWidth" :min="0" :max="5" :step="1" thumb-label></v-slider>
-            <h1>Base</h1>
+            <v-slider label="Width" v-model="borderWidth" :min="0" :max="5" :step="1" thumb-label></v-slider>
+            <h3>Base</h3>
             <v-color-picker v-model="baseBackgroundColour" hide-inputs show-swatches></v-color-picker>
           </v-col>
           <v-col cols="12" md="4" class="d-flex justify-center align-center">
