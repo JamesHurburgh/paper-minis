@@ -1,7 +1,7 @@
 <template>
-  <HelloWorld />
+  <PaperMiniMaker />
 </template>
 
 <script lang="ts" setup>
-  import HelloWorld from '@/components/HelloWorld.vue'
+  import PaperMiniMaker from '@/components/PaperMiniMaker.vue'
 </script>
