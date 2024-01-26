@@ -1,51 +1,89 @@
 <template>
   <v-container class="fill-height">
-    <v-responsive class="align-center text-center fill-height">
+    <v-responsive class="fill-height">
       <v-container fluid>
         <v-row>
-          <v-col cols="6" md="4" class="no-print">
-            <h3>Image</h3>
-            <v-text-field v-model="imageUrl" label="Image URL"></v-text-field>
-            <v-select label="Size" v-model="size"
-              :items="sizes"  :item-props="itemProps"></v-select>
-            <h3>Text</h3>
-            <v-text-field v-model="name" label="Name"></v-text-field>
-            <v-switch v-model="numbered" label="Numbered" hide-details></v-switch>
-            <v-slider label="Copies" v-model="copies" :min="1" :max="20" :step="1" thumb-label></v-slider>
-            <h3>Border</h3>
-            <p>Style: {{ borderStyle }}</p>
-            <v-radio-group v-model="borderStyle">
-              <v-radio label="solid" value="solid"></v-radio>
-              <v-radio label="dashed" value="dashed"></v-radio>
-              <v-radio label="dotted" value="dotted"></v-radio>
-            </v-radio-group>
-            <v-slider label="Width" v-model="borderWidth" :min="0" :max="5" :step="1" thumb-label></v-slider>
-            <h3>Base</h3>
-            <v-color-picker v-model="baseBackgroundColour" hide-inputs show-swatches></v-color-picker>
+          <v-col md="6" class="no-print">
+            <v-card prepend-icon="mdi-cog">
+              <template v-slot:title>
+                Settings
+              </template>
+              <v-card-subtitle>
+                Adjust values here to change what the paper minis will look like.
+              </v-card-subtitle>
+              <v-card-text>
+                <h3>Image</h3>
+                <v-row>
+                  <v-col md="9">
+                    <v-text-field v-model="imageUrl" label="Image URL"></v-text-field>
+                  </v-col>
+                  <v-col md="3">
+                    <v-select label="Size" v-model="size" :items="sizes" :item-props="itemProps"></v-select>
+                  </v-col>
+                </v-row>
+                <h3>Text</h3>
+                <v-text-field v-model="name" label="Name"></v-text-field>
+                <v-switch v-model="numbered" label="Numbered" hide-details></v-switch>
+                <v-slider label="Copies" v-model="copies" :min="1" :max="20" :step="1" thumb-label></v-slider>
+                <v-expansion-panels>
+                  <v-expansion-panel key="Border">
+                    <v-expansion-panel-title>
+                      Border
+                    </v-expansion-panel-title>
+                    <v-expansion-panel-text>
+                      <p>Style: {{ borderStyle }}</p>
+                      <v-radio-group v-model="borderStyle">
+                        <v-radio label="solid" value="solid"></v-radio>
+                        <v-radio label="dashed" value="dashed"></v-radio>
+                        <v-radio label="dotted" value="dotted"></v-radio>
+                      </v-radio-group>
+                      <v-slider label="Width" v-model="borderWidth" :min="0" :max="5" :step="1" thumb-label></v-slider>
+                    </v-expansion-panel-text>
+                  </v-expansion-panel>
+                  <v-expansion-panel key="Base">
+                    <v-expansion-panel-title>
+                      Base
+                    </v-expansion-panel-title>
+                    <v-expansion-panel-text>
+                      <v-color-picker v-model="baseBackgroundColour" hide-inputs show-swatches></v-color-picker>
+                    </v-expansion-panel-text>
+                  </v-expansion-panel>
+                </v-expansion-panels>
+              </v-card-text>
+            </v-card>
           </v-col>
-          <v-col cols="12" md="4" class="d-flex justify-center align-center">
-            <div v-for="(item, index) in copies" :key="index" style="float: left;">
-              <div :style="`${tokenStyle} ${baseStyle}`" :class="`${size} ${size}-half-base`">
-                <div v-if="name" class="rotated">{{ name }}</div>
-                <div v-else>&nbsp;</div>
-                <div v-if="numbered" class="rotated">{{ index + 1 }}</div>
-                <div v-else>&nbsp;</div>
-              </div>
-              <v-img :style="tokenStyle" :class="`${size} flip-vertical`" :src="`${imageUrl}`" />
-              <v-img :style="tokenStyle" :class="`${size}`" :src="`${imageUrl}`" />
-              <div :style="`${tokenStyle} ${baseStyle}`" :class="`${size} ${size}-half-base`">
-                <span v-if="numbered">{{ index + 1 }}</span>
-                <div v-else>&nbsp;</div>
-                <div v-if="name">{{ name }}</div>
-                <div v-else>&nbsp;</div>
-              </div>
-              <div :style="tokenStyle" :class="`${size} ${size}-base`"></div>
-            </div>
-          </v-col>
+          <v-col md="6" class="justify-center">
+            <v-card prepend-icon="mdi-image">
+              <template v-slot:title>
+                Preview
+              </template>
+              <v-card-subtitle>
+                This preview shows what the paper minis may look like.
+              </v-card-subtitle>
 
+              <v-card-text>
+                <div v-for="(item, index) in copies" :key="index" style="float: left;" class="align-center text-center">
+                  <div :style="`${tokenStyle} ${baseStyle}`" :class="`${size} ${size}-half-base`">
+                    <div v-if="name" class="rotated">{{ name }}</div>
+                    <div v-else>&nbsp;</div>
+                    <div v-if="numbered" class="rotated">{{ index + 1 }}</div>
+                    <div v-else>&nbsp;</div>
+                  </div>
+                  <v-img :style="tokenStyle" :class="`${size} flip-vertical`" :src="`${imageUrl}`" />
+                  <v-img :style="tokenStyle" :class="`${size}`" :src="`${imageUrl}`" />
+                  <div :style="`${tokenStyle} ${baseStyle}`" :class="`${size} ${size}-half-base`">
+                    <span v-if="numbered">{{ index + 1 }}</span>
+                    <div v-else>&nbsp;</div>
+                    <div v-if="name">{{ name }}</div>
+                    <div v-else>&nbsp;</div>
+                  </div>
+                  <div :style="tokenStyle" :class="`${size} ${size}-base`"></div>
+                </div>
+              </v-card-text>
+            </v-card>
+          </v-col>
         </v-row>
       </v-container>
-
     </v-responsive>
   </v-container>
 </template>
@@ -218,12 +256,12 @@ export default defineComponent({
     }
   },
   methods: {
-      itemProps (item: any) {
-        return {
-          title: item.title,
-          subtitle: item.subtitle,
-        }
-      },
+    itemProps(item: any) {
+      return {
+        title: item.title,
+        subtitle: item.subtitle,
+      }
     },
+  },
 })
 </script>
