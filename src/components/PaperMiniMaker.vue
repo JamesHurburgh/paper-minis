@@ -19,7 +19,7 @@
                 <v-expansion-panels>
                   <v-expansion-panel key="Image">
                     <v-expansion-panel-title>
-                      Image
+                      Token
                     </v-expansion-panel-title>
                     <v-expansion-panel-text>
                       <v-row>
