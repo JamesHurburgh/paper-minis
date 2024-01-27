@@ -15,38 +15,44 @@
                 Adjust values here to change what the paper minis will look like.
               </v-card-subtitle>
               <v-card-text>
-                <h3>Image</h3>
-                <v-row>
-                  <v-col md="9">
-                    <v-text-field v-model="imageUrl" label="Image URL"></v-text-field>
-                  </v-col>
-                  <v-col md="3">
-                    <v-select label="Size" v-model="size" :items="sizes" :item-props="itemProps"></v-select>
-                  </v-col>
-                </v-row>
-                <v-row>
-                  <v-col md="12">
-                    <v-slider label="Rounded Edges" v-model="imageRoundedEdgeAmount" :min="0" :max="sizes.filter(s => s.value === size)[0]!.width / 2" :step="0.1"
-                      thumb-label></v-slider>
-                  </v-col>
-                </v-row>
                 <v-slider label="Copies" v-model="copies" :min="1" :max="20" :step="1" thumb-label></v-slider>
                 <v-expansion-panels>
-                  <v-expansion-panel key="Label">
+                  <v-expansion-panel key="Image">
                     <v-expansion-panel-title>
-                      Label
+                      Image
                     </v-expansion-panel-title>
                     <v-expansion-panel-text>
                       <v-row>
-                        <v-col md="6">
-                          <v-text-field v-model="name" label="Name"></v-text-field>
+                        <v-col md="9">
+                          <v-text-field v-model="imageUrl" label="Image URL"></v-text-field>
                         </v-col>
                         <v-col md="3">
-                          <v-switch v-model="numbered" label="Numbered"></v-switch>
+                          <v-select label="Size" v-model="size" :items="sizes" :item-props="itemProps"></v-select>
+                        </v-col>
+                      </v-row>
+                      <v-row>
+                        <v-col md="9">
+                          <v-slider label="Rounded Edges" v-model="imageRoundedEdgeAmount" :min="0"
+                            :max="sizes.filter(s => s.value === size)[0]!.width / 2" :step="0.1" thumb-label></v-slider>
                         </v-col>
                         <v-col md="3">
-                          <v-text-field v-if="numbered" v-model="startNumber" persistent-hint hint="Start Number"
-                            single-line type="number" />
+                          <v-btn color="primary">Background Colour
+                            <v-dialog v-model="imageBackgroundColourDialog" activator="parent" width="auto">
+                              <v-card>
+                                <v-card-title>
+                                  <span class="text-h5">Select colour</span>
+                                </v-card-title>
+                                <v-card-text>
+                                  <v-color-picker v-model="imageBackgroundColour" hide-inputs
+                                    show-swatches></v-color-picker>
+                                </v-card-text>
+                                <v-card-actions>
+                                  <v-btn color="primary" block @click="imageBackgroundColourDialog = false">Close
+                                    Dialog</v-btn>
+                                </v-card-actions>
+                              </v-card>
+                            </v-dialog>
+                          </v-btn>
                         </v-col>
                       </v-row>
                     </v-expansion-panel-text>
@@ -70,22 +76,41 @@
                       Base
                     </v-expansion-panel-title>
                     <v-expansion-panel-text>
-                      <v-btn color="primary">Background Colour
-                        <v-dialog v-model="baseBackgroundColourDialog" activator="parent" width="auto">
-                          <v-card>
-                            <v-card-title>
-                              <span class="text-h5">Select base colour</span>
-                            </v-card-title>
-                            <v-card-text>
-                              <v-color-picker v-model="baseBackgroundColour" hide-inputs show-swatches></v-color-picker>
-                            </v-card-text>
-                            <v-card-actions>
-                              <v-btn color="primary" block @click="baseBackgroundColourDialog = false">Close
-                                Dialog</v-btn>
-                            </v-card-actions>
-                          </v-card>
-                        </v-dialog>
-                      </v-btn>
+                      <v-row>
+                        <v-col md="6">
+                          <v-text-field v-model="name" label="Name"></v-text-field>
+                        </v-col>
+                        <v-col md="3">
+                          <v-switch v-model="numbered" label="Numbered"></v-switch>
+                        </v-col>
+                        <v-col md="3">
+                          <v-text-field v-if="numbered" v-model="startNumber" persistent-hint hint="Start Number"
+                            single-line type="number" />
+                        </v-col>
+                        <!-- <v-col md="9">
+                          <v-slider label="Rounded Edges" v-model="baseRoundedEdgeAmount" :min="0"
+                            :max="sizes.filter(s => s.value === size)[0]!.width / 2" :step="0.1" thumb-label></v-slider>
+                        </v-col> -->
+                        <v-col md="3">
+                          <v-btn color="primary">Background Colour
+                            <v-dialog v-model="baseBackgroundColourDialog" activator="parent" width="auto">
+                              <v-card>
+                                <v-card-title>
+                                  <span class="text-h5">Select base colour</span>
+                                </v-card-title>
+                                <v-card-text>
+                                  <v-color-picker v-model="baseBackgroundColour" hide-inputs
+                                    show-swatches></v-color-picker>
+                                </v-card-text>
+                                <v-card-actions>
+                                  <v-btn color="primary" block @click="baseBackgroundColourDialog = false">Close
+                                    Dialog</v-btn>
+                                </v-card-actions>
+                              </v-card>
+                            </v-dialog>
+                          </v-btn>
+                        </v-col>
+                      </v-row>
                     </v-expansion-panel-text>
                   </v-expansion-panel>
                   <v-expansion-panel key="Base">
@@ -163,15 +188,18 @@ export default defineComponent({
 
   data: () => ({
     imageUrl: "https://i.imgur.com/bYJ3gBl.png",
+    imageBackgroundColour: "lightblue",
+    imageBackgroundColourDialog: false,
+    imageRoundedEdgeAmount: 0.4,
     name: "Werewolf",
     copies: 14,
     size: "medium",
     borderStyle: "solid",
     borderWidth: 1,
     baseBackgroundType: "solid",
-    baseBackgroundColour: "lightgrey",
+    baseBackgroundColour: "darkgrey",
     baseBackgroundColourDialog: false,
-    imageRoundedEdgeAmount: 0.4,
+    baseRoundedEdgeAmount: 0.5,
     numbered: true,
     startNumber: 1,
     sizes: [
@@ -238,13 +266,8 @@ export default defineComponent({
       return `border-style: ${this.borderStyle};` +
         `border-width: ${this.borderWidth}px;` +
         `border-top-left-radius: ${this.imageRoundedEdgeAmount}in;` +
-        `border-top-right-radius: ${this.imageRoundedEdgeAmount}in;`
-    },
-    reverseImageStyle() {
-      return `border-style: ${this.borderStyle};` +
-        `border-width: ${this.borderWidth}px;` +
-        `border-top-left-radius: ${this.imageRoundedEdgeAmount}in;` +
-        `border-bottom-right-radius: ${this.imageRoundedEdgeAmount}in;`
+        `border-top-right-radius: ${this.imageRoundedEdgeAmount}in;` +
+        `background-color: ${this.imageBackgroundColour} !important; print-color-adjust: exact;`
     },
     tokenStyle() {
       return `border-style: ${this.borderStyle};` +
