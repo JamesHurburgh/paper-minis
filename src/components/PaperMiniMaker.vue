@@ -302,7 +302,7 @@ export default defineComponent({
           printableMinisCssPath,
           `./pages/${this.pageSize}.${this.pageOrientation}.css`
         ],
-        windowTitle: `Paper Minis - ${this.name}`,
+        windowTitle: `Paper Minis${this.name ? ' - ' + this.name : ''}`,
         autoClose: true
       })
       paperize()
