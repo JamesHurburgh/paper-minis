@@ -24,6 +24,12 @@
                     <v-select label="Size" v-model="size" :items="sizes" :item-props="itemProps"></v-select>
                   </v-col>
                 </v-row>
+                <v-row>
+                  <v-col md="12">
+                    <v-slider label="Rounded Edges" v-model="imageRoundedEdgeAmount" :min="0" :max="sizes.filter(s => s.value === size)[0]!.width / 2" :step="0.1"
+                      thumb-label></v-slider>
+                  </v-col>
+                </v-row>
                 <v-slider label="Copies" v-model="copies" :min="1" :max="20" :step="1" thumb-label></v-slider>
                 <v-expansion-panels>
                   <v-expansion-panel key="Label">
@@ -117,8 +123,8 @@
                       <div v-if="name" class="rotated">{{ name }}</div>
                       <div v-else>&nbsp;</div>
                     </div>
-                    <v-img :style="tokenStyle" :class="`${size} flip-vertical`" :src="`${imageUrl}`" />
-                    <v-img :style="tokenStyle" :class="`${size}`" :src="`${imageUrl}`" />
+                    <v-img :style="imageStyle" :class="`${size} flip-vertical`" :src="`${imageUrl}`" />
+                    <v-img :style="imageStyle" :class="`${size}`" :src="`${imageUrl}`" />
                     <div :style="`${tokenStyle} ${baseStyle}`" :class="`${size} ${size}-half-base`">
                       <div v-if="name">{{ name }}</div>
                       <div v-else>&nbsp;</div>
@@ -165,33 +171,39 @@ export default defineComponent({
     baseBackgroundType: "solid",
     baseBackgroundColour: "lightgrey",
     baseBackgroundColourDialog: false,
+    imageRoundedEdgeAmount: 0.2,
     numbered: true,
     startNumber: 1,
     sizes: [
       {
         title: "Tiny",
         value: "tiny",
-        subtitle: "1/2 inch"
+        subtitle: "1/2 inch",
+        width: 0.5
       },
       {
         title: "Small/Medium",
         value: "medium",
-        subtitle: "1 inch"
+        subtitle: "1 inch",
+        width: 1
       },
       {
         title: "Large",
         value: "large",
-        subtitle: "2 inches"
+        subtitle: "2 inches",
+        width: 2
       },
       {
         title: "Huge",
         value: "huge",
-        subtitle: "3 inches"
+        subtitle: "3 inches",
+        width: 3
       },
       {
         title: "Gargantuan",
         value: "gargantuan",
-        subtitle: "4 inches"
+        subtitle: "4 inches",
+        width: 4
       }
     ],
     pageOrientations: [
@@ -222,8 +234,21 @@ export default defineComponent({
     ]
   }),
   computed: {
+    imageStyle() {
+      return `border-style: ${this.borderStyle};` +
+        `border-width: ${this.borderWidth}px;` +
+        `border-top-left-radius: ${this.imageRoundedEdgeAmount}in;` +
+        `border-top-right-radius: ${this.imageRoundedEdgeAmount}in;`
+    },
+    reverseImageStyle() {
+      return `border-style: ${this.borderStyle};` +
+        `border-width: ${this.borderWidth}px;` +
+        `border-top-left-radius: ${this.imageRoundedEdgeAmount}in;` +
+        `border-bottom-right-radius: ${this.imageRoundedEdgeAmount}in;`
+    },
     tokenStyle() {
-      return `border-style: ${this.borderStyle}; border-width: ${this.borderWidth}px;`
+      return `border-style: ${this.borderStyle};` +
+        `border-width: ${this.borderWidth}px;`
     },
     baseStyle() {
       switch (this.baseBackgroundType) {
