@@ -33,7 +33,7 @@
                       </v-row>
                       <v-row>
                         <v-col md="9">
-                          <v-slider label="Rounded Edges" v-model="paperMini.imageRoundedEdgeAmount" :min="0"
+                          <v-slider label="Rounded Edges" v-model="miniStyle.imageRoundedEdgeAmount" :min="0"
                             :max="sizes.filter(s => s.value === paperMini.size)[0]!.width / 2" :step="0.1"
                             thumb-label></v-slider>
                         </v-col>
@@ -45,7 +45,7 @@
                                   <span class="text-h5">Select colour</span>
                                 </v-card-title>
                                 <v-card-text>
-                                  <v-color-picker v-model="paperMini.imageBackgroundColour" hide-inputs
+                                  <v-color-picker v-model="miniStyle.imageBackgroundColour" hide-inputs
                                     show-swatches></v-color-picker>
                                 </v-card-text>
                                 <v-card-actions>
@@ -64,13 +64,13 @@
                       Border
                     </v-expansion-panel-title>
                     <v-expansion-panel-text>
-                      <p>Style: {{ paperMini.borderStyle }}</p>
-                      <v-radio-group v-model="paperMini.borderStyle">
+                      <p>Style: {{ miniStyle.borderStyle }}</p>
+                      <v-radio-group v-model="miniStyle.borderStyle">
                         <v-radio label="solid" value="solid"></v-radio>
                         <v-radio label="dashed" value="dashed"></v-radio>
                         <v-radio label="dotted" value="dotted"></v-radio>
                       </v-radio-group>
-                      <v-slider label="Width" v-model="paperMini.borderWidth" :min="0" :max="5" :step="1" thumb-label></v-slider>
+                      <v-slider label="Width" v-model="miniStyle.borderWidth" :min="0" :max="5" :step="1" thumb-label></v-slider>
                     </v-expansion-panel-text>
                   </v-expansion-panel>
                   <v-expansion-panel key="Base">
@@ -83,10 +83,10 @@
                           <v-text-field v-model="paperMini.name" label="Name" clearable></v-text-field>
                         </v-col>
                         <v-col md="3">
-                          <v-switch v-model="paperMini.numbered" label="Numbered"></v-switch>
+                          <v-switch v-model="miniStyle.numbered" label="Numbered"></v-switch>
                         </v-col>
                         <v-col md="3">
-                          <v-text-field v-if="paperMini.numbered" v-model="paperMini.startNumber" persistent-hint hint="Start Number"
+                          <v-text-field v-if="miniStyle.numbered" v-model="miniStyle.startNumber" persistent-hint hint="Start Number"
                             single-line type="number" />
                         </v-col>
                         <!-- <v-col md="9">
@@ -101,7 +101,7 @@
                                   <span class="text-h5">Select base colour</span>
                                 </v-card-title>
                                 <v-card-text>
-                                  <v-color-picker v-model="paperMini.baseBackgroundColour" hide-inputs
+                                  <v-color-picker v-model="miniStyle.baseBackgroundColour" hide-inputs
                                     show-swatches></v-color-picker>
                                 </v-card-text>
                                 <v-card-actions>
@@ -145,7 +145,7 @@
                 <div id="print-me">
                   <div v-for="(item, index) in copies" :key="index" style="float: left;" class="align-center text-center">
                     <div :style="`${tokenStyle} ${baseStyle}`" :class="`${paperMini.size} ${paperMini.size}-half-base`">
-                      <div v-if="paperMini.numbered" class="rotated">{{ index + Number(paperMini.startNumber) }}</div>
+                      <div v-if="miniStyle.numbered" class="rotated">{{ index + Number(miniStyle.startNumber) }}</div>
                       <div v-else>&nbsp;</div>
                       <div v-if="paperMini.name" class="rotated">{{ paperMini.name }}</div>
                       <div v-else>&nbsp;</div>
@@ -156,7 +156,7 @@
                     <div :style="`${tokenStyle} ${baseStyle}`" :class="`${paperMini.size} ${paperMini.size}-half-base`">
                       <div v-if="paperMini.name">{{ paperMini.name }}</div>
                       <div v-else>&nbsp;</div>
-                      <div v-if="paperMini.numbered">{{ index + Number(paperMini.startNumber) }}</div>
+                      <div v-if="miniStyle.numbered">{{ index + Number(miniStyle.startNumber) }}</div>
                       <div v-else>&nbsp;</div>
                     </div>
                     <div :style="tokenStyle" :class="`${paperMini.size} ${paperMini.size}-base`"></div>
@@ -192,10 +192,12 @@ export default defineComponent({
   data: () => ({
     paperMini: {
       imageUrl: "https://i.imgur.com/bYJ3gBl.png",
-      imageBackgroundColour: "lightblue",
-      imageRoundedEdgeAmount: 0.4,
       name: "Werewolf",
       size: "medium",
+    },
+    miniStyle: {
+      imageBackgroundColour: "lightblue",
+      imageRoundedEdgeAmount: 0.4,
       borderStyle: "solid",
       borderWidth: 1,
       baseBackgroundType: "solid",
@@ -268,20 +270,20 @@ export default defineComponent({
   }),
   computed: {
     imageStyle() {
-      return `border-style: ${this.paperMini.borderStyle};` +
-        `border-width: ${this.paperMini.borderWidth}px;` +
-        `border-top-left-radius: ${this.paperMini.imageRoundedEdgeAmount}in;` +
-        `border-top-right-radius: ${this.paperMini.imageRoundedEdgeAmount}in;` +
-        `background-color: ${this.paperMini.imageBackgroundColour} !important; print-color-adjust: exact;`
+      return `border-style: ${this.miniStyle.borderStyle};` +
+        `border-width: ${this.miniStyle.borderWidth}px;` +
+        `border-top-left-radius: ${this.miniStyle.imageRoundedEdgeAmount}in;` +
+        `border-top-right-radius: ${this.miniStyle.imageRoundedEdgeAmount}in;` +
+        `background-color: ${this.miniStyle.imageBackgroundColour} !important; print-color-adjust: exact;`
     },
     tokenStyle() {
-      return `border-style: ${this.paperMini.borderStyle};` +
-        `border-width: ${this.paperMini.borderWidth}px;`
+      return `border-style: ${this.miniStyle.borderStyle};` +
+        `border-width: ${this.miniStyle.borderWidth}px;`
     },
     baseStyle() {
-      switch (this.paperMini.baseBackgroundType) {
+      switch (this.miniStyle.baseBackgroundType) {
         case "solid":
-          return `background-color: ${this.paperMini.baseBackgroundColour} !important; print-color-adjust: exact;`
+          return `background-color: ${this.miniStyle.baseBackgroundColour} !important; print-color-adjust: exact;`
         default:
           return ""
       }
