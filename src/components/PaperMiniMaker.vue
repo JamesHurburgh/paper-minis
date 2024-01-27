@@ -34,7 +34,7 @@
                       <v-row>
                         <v-col md="9">
                           <v-slider label="Rounded Edges" v-model="miniStyle.imageRoundedEdgeAmount" :min="0"
-                            :max="sizes.filter(s => s.value === paperMini.size)[0]!.width / 2" :step="0.1"
+                            :max="100" :step="1"
                             thumb-label></v-slider>
                         </v-col>
                         <v-col md="3">
@@ -89,10 +89,10 @@
                           <v-text-field v-if="miniStyle.numbered" v-model="miniStyle.startNumber" persistent-hint hint="Start Number"
                             single-line type="number" />
                         </v-col>
-                        <!-- <v-col md="9">
-                          <v-slider label="Rounded Edges" v-model="baseRoundedEdgeAmount" :min="0"
-                            :max="sizes.filter(s => s.value === size)[0]!.width / 2" :step="0.1" thumb-label></v-slider>
-                        </v-col> -->
+                        <v-col md="9">
+                          <v-slider label="Rounded Edges" v-model="miniStyle.baseRoundedEdgeAmount" :min="0"
+                            :max="100" :step="1" thumb-label></v-slider>
+                        </v-col>
                         <v-col md="3">
                           <v-btn color="primary">Background Colour
                             <v-dialog v-model="baseBackgroundColourDialog" activator="parent" width="auto">
@@ -144,7 +144,7 @@
               <v-card-text>
                 <div id="print-me">
                   <div v-for="(item, index) in copies" :key="index" style="float: left;" class="align-center text-center">
-                    <div :style="`${tokenStyle} ${baseStyle}`" :class="`${paperMini.size} ${paperMini.size}-half-base`">
+                    <div :style="`${tokenStyle} ${reversedBaseStyle}`" :class="`${paperMini.size} ${paperMini.size}-half-base`">
                       <div v-if="miniStyle.numbered" class="rotated">{{ index + Number(miniStyle.startNumber) }}</div>
                       <div v-else>&nbsp;</div>
                       <div v-if="paperMini.name" class="rotated">{{ paperMini.name }}</div>
@@ -197,12 +197,12 @@ export default defineComponent({
     },
     miniStyle: {
       imageBackgroundColour: "lightblue",
-      imageRoundedEdgeAmount: 0.4,
+      imageRoundedEdgeAmount: 50,
       borderStyle: "solid",
       borderWidth: 1,
       baseBackgroundType: "solid",
       baseBackgroundColour: "darkgrey",
-      baseRoundedEdgeAmount: 0.5,
+      baseRoundedEdgeAmount: 100,
       numbered: true,
       startNumber: 1,
     },
@@ -270,10 +270,11 @@ export default defineComponent({
   }),
   computed: {
     imageStyle() {
+      const roundedEdgeMeasurement = this.sizes.filter(s => s.value === this.paperMini.size)[0]!.width * (this.miniStyle.imageRoundedEdgeAmount / 200)
       return `border-style: ${this.miniStyle.borderStyle};` +
         `border-width: ${this.miniStyle.borderWidth}px;` +
-        `border-top-left-radius: ${this.miniStyle.imageRoundedEdgeAmount}in;` +
-        `border-top-right-radius: ${this.miniStyle.imageRoundedEdgeAmount}in;` +
+        `border-top-left-radius: ${roundedEdgeMeasurement}in;` +
+        `border-top-right-radius: ${roundedEdgeMeasurement}in;` +
         `background-color: ${this.miniStyle.imageBackgroundColour} !important; print-color-adjust: exact;`
     },
     tokenStyle() {
@@ -281,12 +282,27 @@ export default defineComponent({
         `border-width: ${this.miniStyle.borderWidth}px;`
     },
     baseStyle() {
+      const roundedEdgeMeasurement = this.sizes.filter(s => s.value === this.paperMini.size)[0]!.width * (this.miniStyle.baseRoundedEdgeAmount / 200)
       switch (this.miniStyle.baseBackgroundType) {
         case "solid":
-          return `background-color: ${this.miniStyle.baseBackgroundColour} !important; print-color-adjust: exact;`
+          return `background-color: ${this.miniStyle.baseBackgroundColour} !important; print-color-adjust: exact;` +
+        `border-bottom-left-radius: ${roundedEdgeMeasurement}in;` +
+        `border-bottom-right-radius: ${roundedEdgeMeasurement}in;`
         default:
           return ""
       }
+    },
+    reversedBaseStyle() {
+      const roundedEdgeMeasurement = this.sizes.filter(s => s.value === this.paperMini.size)[0]!.width * (this.miniStyle.baseRoundedEdgeAmount / 200)
+      switch (this.miniStyle.baseBackgroundType) {
+        case "solid":
+          return `background-color: ${this.miniStyle.baseBackgroundColour} !important; print-color-adjust: exact;` +
+        `border-top-left-radius: ${roundedEdgeMeasurement}in;` +
+        `border-top-right-radius: ${roundedEdgeMeasurement}in;`
+        default:
+          return ""
+      }
+
     }
   },
   methods: {
