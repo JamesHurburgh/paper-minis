@@ -162,8 +162,8 @@ export default defineComponent({
   name: 'PaperMiniMaker}',
 
   data: () => ({
-    imageUrl: "https://www.dndbeyond.com/avatars/thumbnails/30783/955/1000/1000/638062024584880857.png",
-    name: "Goblin",
+    imageUrl: "https://i.imgur.com/bYJ3gBl.png",
+    name: "Werewolf",
     copies: 14,
     size: "medium",
     borderStyle: "solid",
@@ -171,7 +171,7 @@ export default defineComponent({
     baseBackgroundType: "solid",
     baseBackgroundColour: "lightgrey",
     baseBackgroundColourDialog: false,
-    imageRoundedEdgeAmount: 0.2,
+    imageRoundedEdgeAmount: 0.4,
     numbered: true,
     startNumber: 1,
     sizes: [
