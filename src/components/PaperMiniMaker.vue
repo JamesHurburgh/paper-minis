@@ -73,6 +73,26 @@
                         <v-radio label="dotted" value="dotted"></v-radio>
                       </v-radio-group>
                       <v-slider label="Width" v-model="miniStyle.borderWidth" :min="0" :max="5" :step="1" thumb-label></v-slider>
+                      
+                      <v-col md="3">
+                          <v-btn color="primary" append-icon="mdi-palette"><div class="d-none d-lg-block">Border</div>
+                            <v-dialog v-model="borderColourDialog" activator="parent" width="auto">
+                              <v-card>
+                                <v-card-title>
+                                  <span class="text-h5">Select colour</span>
+                                </v-card-title>
+                                <v-card-text>
+                                  <v-color-picker v-model="miniStyle.borderColour"
+                                    show-swatches :swatches="swatches"></v-color-picker>
+                                </v-card-text>
+                                <v-card-actions>
+                                  <v-btn color="primary" block @click="borderColourDialog = false">Close
+                                    Dialog</v-btn>
+                                </v-card-actions>
+                              </v-card>
+                            </v-dialog>
+                          </v-btn>
+                        </v-col>
                     </v-expansion-panel-text>
                   </v-expansion-panel>
                   <v-expansion-panel key="Base">
@@ -96,7 +116,7 @@
                             :max="100" :step="1" thumb-label></v-slider>
                         </v-col>
                         <v-col md="3">
-                          <v-btn color="primary"><div class="d-none d-lg-block">Background</div>
+                          <v-btn color="primary" append-icon="mdi-palette"><div class="d-none d-lg-block">Background</div>
                             <v-dialog v-model="baseBackgroundColourDialog" activator="parent" width="auto">
                               <v-card>
                                 <v-card-title>
@@ -202,15 +222,17 @@ export default defineComponent({
       imageRoundedEdgeAmount: 50,
       borderStyle: "solid",
       borderWidth: 1,
+      borderColour: "#888888",
       baseBackgroundType: "solid",
       baseBackgroundColour: "#DDDDDD",
       baseRoundedEdgeAmount: 100,
       numbered: true,
       startNumber: 1,
     },
-    imageBackgroundColourDialog: false,
     copies: 14,
+    imageBackgroundColourDialog: false,
     baseBackgroundColourDialog: false,
+    borderColourDialog: false,
     
     swatches: [
         ['#000000', '#888888', '#FFFFFF'],
@@ -285,11 +307,15 @@ export default defineComponent({
         `border-width: ${this.miniStyle.borderWidth}px;` +
         `border-top-left-radius: ${roundedEdgeMeasurement}in;` +
         `border-top-right-radius: ${roundedEdgeMeasurement}in;` +
-        `background-color: ${this.miniStyle.imageBackgroundColour} !important; print-color-adjust: exact;`
+        `background-color: ${this.miniStyle.imageBackgroundColour} !important; print-color-adjust: exact;` +
+        `border-color: ${this.miniStyle.borderColour};`
     },
     tokenStyle() {
+
       return `border-style: ${this.miniStyle.borderStyle};` +
-        `border-width: ${this.miniStyle.borderWidth}px;`
+        `border-width: ${this.miniStyle.borderWidth}px;` +
+        `border-color: ${this.miniStyle.borderColour};`
+        
     },
     baseStyle() {
       const roundedEdgeMeasurement = this.sizes.filter(s => s.value === this.paperMini.size)[0]!.width * (this.miniStyle.baseRoundedEdgeAmount / 200)
@@ -321,12 +347,14 @@ export default defineComponent({
       this.miniStyle.imageRoundedEdgeAmount = 50
       this.miniStyle.baseBackgroundColour = `#DDDDDD`
       this.miniStyle.baseRoundedEdgeAmount = 100
+      this.miniStyle.borderColour = `#888888`
     },
     randomiseStyle() {
       this.miniStyle.imageBackgroundColour = `#${Math.floor(Math.random()*16777215).toString(16)}`
       this.miniStyle.imageRoundedEdgeAmount = Math.floor(Math.random()*100)
       this.miniStyle.baseBackgroundColour = `#${Math.floor(Math.random()*16777215).toString(16)}`
       this.miniStyle.baseRoundedEdgeAmount = Math.floor(Math.random()*100)
+      this.miniStyle.borderColour = `#${Math.floor(Math.random()*16777215).toString(16)}`
       // borderStyle: "solid",
       // borderWidth: 1,
       // baseBackgroundType: "solid",
