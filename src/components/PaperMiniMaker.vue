@@ -46,7 +46,7 @@
                                 </v-card-title>
                                 <v-card-text>
                                   <v-color-picker v-model="miniStyle.imageBackgroundColour" hide-inputs
-                                    show-swatches></v-color-picker>
+                                    show-swatches :swatches="swatches"></v-color-picker>
                                 </v-card-text>
                                 <v-card-actions>
                                   <v-btn color="primary" block @click="imageBackgroundColourDialog = false">Close
@@ -101,8 +101,8 @@
                                   <span class="text-h5">Select base colour</span>
                                 </v-card-title>
                                 <v-card-text>
-                                  <v-color-picker v-model="miniStyle.baseBackgroundColour" hide-inputs
-                                    show-swatches></v-color-picker>
+                                  <v-color-picker v-model="miniStyle.baseBackgroundColour"
+                                    show-swatches :swatches="swatches"></v-color-picker>
                                 </v-card-text>
                                 <v-card-actions>
                                   <v-btn color="primary" block @click="baseBackgroundColourDialog = false">Close
@@ -209,6 +209,14 @@ export default defineComponent({
     imageBackgroundColourDialog: false,
     copies: 14,
     baseBackgroundColourDialog: false,
+    
+    swatches: [
+        ['#000000', '#888888', '#FFFFFF'],
+        ['#FF0000', '#AA0000', '#550000'],
+        ['#FFFF00', '#AAAA00', '#555500'],
+        ['#00FF00', '#00AA00', '#005500'],
+        ['#0000FF', '#0000AA', '#000055'],
+      ],
     sizes: [
       {
         title: "Tiny",
