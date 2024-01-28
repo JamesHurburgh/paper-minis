@@ -3,12 +3,13 @@
     <v-responsive class="fill-height">
       <v-container fluid>
         <v-row>
-          <v-col md="6" class="no-print">
+          <v-col md="6">
             <v-card prepend-icon="mdi-cog">
               <template v-slot:title>
                 Settings
               </template>
               <template v-slot:append>
+                <v-btn prepend-icon="mdi-shuffle" @click="randomiseStyle">Random</v-btn>
                 <v-btn prepend-icon="mdi-printer" @click="print">Print</v-btn>
               </template>
               <v-card-subtitle>
@@ -196,7 +197,7 @@ export default defineComponent({
       size: "medium",
     },
     miniStyle: {
-      imageBackgroundColour: "lightblue",
+      imageBackgroundColour: "white",
       imageRoundedEdgeAmount: 50,
       borderStyle: "solid",
       borderWidth: 1,
@@ -314,6 +315,17 @@ export default defineComponent({
     }
   },
   methods: {
+    randomiseStyle() {
+      this.miniStyle.imageBackgroundColour = `#${Math.floor(Math.random()*16777215).toString(16)}`
+      this.miniStyle.imageRoundedEdgeAmount = Math.floor(Math.random()*100)
+      this.miniStyle.baseBackgroundColour = `#${Math.floor(Math.random()*16777215).toString(16)}`
+      this.miniStyle.baseRoundedEdgeAmount = Math.floor(Math.random()*100)
+      // borderStyle: "solid",
+      // borderWidth: 1,
+      // baseBackgroundType: "solid",
+      // baseBackgroundColour: "darkgrey",
+      // baseRoundedEdgeAmount: 100,
+    },
     itemProps(item: any) {
       return {
         title: item.title,
