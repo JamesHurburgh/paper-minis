@@ -127,6 +127,8 @@
                           <v-text-field v-if="miniStyle.numbered" v-model="miniStyle.startNumber" persistent-hint
                             hint="Start Number" single-line type="number" />
                         </v-col>
+                      </v-row>
+                      <v-row>
                         <v-col md="9">
                           <v-slider label="Rounded Edges" v-model="miniStyle.baseRoundedEdgeAmount" :min="0" :max="100"
                             :step="1" thumb-label></v-slider>
@@ -151,6 +153,29 @@
                             </v-dialog>
                           </v-btn>
                         </v-col>
+                      </v-row>
+                      <v-row>
+                        <v-col md="3">
+                          <v-btn color="primary" append-icon="mdi-palette">
+                            <div>Text</div>
+                            <v-dialog v-model="baseTextColourDialog" activator="parent" width="auto">
+                              <v-card>
+                                <v-card-title>
+                                  <span class="text-h5">Select text colour</span>
+                                </v-card-title>
+                                <v-card-text>
+                                  <v-color-picker v-model="miniStyle.baseTextColour" show-swatches
+                                    :swatches="swatches"></v-color-picker>
+                                </v-card-text>
+                                <v-card-actions>
+                                  <v-btn color="primary" block @click="baseTextColourDialog = false">Close
+                                    Dialog</v-btn>
+                                </v-card-actions>
+                              </v-card>
+                            </v-dialog>
+                          </v-btn>
+                        </v-col>
+
                       </v-row>
                     </v-expansion-panel-text>
                   </v-expansion-panel>
@@ -244,6 +269,7 @@ export default defineComponent({
       borderColour: "#888888",
       baseBackgroundType: "solid",
       baseBackgroundColour: "#DDDDDD",
+      baseTextColour: "#000000",
       baseRoundedEdgeAmount: 100,
       numbered: true,
       startNumber: 1,
@@ -253,6 +279,7 @@ export default defineComponent({
     imageBackgroundColourDialog: false,
     baseBackgroundColourDialog: false,
     borderColourDialog: false,
+    baseTextColourDialog: false,
 
     swatches: [
       ['#000000', '#888888', '#FFFFFF'],
@@ -346,7 +373,8 @@ export default defineComponent({
         case "solid":
           return `background-color: ${this.miniStyle.baseBackgroundColour} !important; print-color-adjust: exact;` +
             `border-bottom-left-radius: ${roundedEdgeMeasurement}in;` +
-            `border-bottom-right-radius: ${roundedEdgeMeasurement}in;`
+            `border-bottom-right-radius: ${roundedEdgeMeasurement}in;` +
+            `color: ${this.miniStyle.baseTextColour}`
         default:
           return ""
       }
@@ -357,7 +385,8 @@ export default defineComponent({
         case "solid":
           return `background-color: ${this.miniStyle.baseBackgroundColour} !important; print-color-adjust: exact;` +
             `border-top-left-radius: ${roundedEdgeMeasurement}in;` +
-            `border-top-right-radius: ${roundedEdgeMeasurement}in;`
+            `border-top-right-radius: ${roundedEdgeMeasurement}in;` +
+            `color: ${this.miniStyle.baseTextColour}`
         default:
           return ""
       }
@@ -371,6 +400,7 @@ export default defineComponent({
       this.miniStyle.baseBackgroundColour = `#DDDDDD`
       this.miniStyle.baseRoundedEdgeAmount = 100
       this.miniStyle.borderColour = `#888888`
+      this.miniStyle.baseTextColour = `#000000`
     },
     randomiseStyle() {
       this.miniStyle.imageBackgroundColour = `#${Math.floor(Math.random() * 16777215).toString(16)}`
@@ -378,6 +408,7 @@ export default defineComponent({
       this.miniStyle.baseBackgroundColour = `#${Math.floor(Math.random() * 16777215).toString(16)}`
       this.miniStyle.baseRoundedEdgeAmount = Math.floor(Math.random() * 100)
       this.miniStyle.borderColour = `#${Math.floor(Math.random() * 16777215).toString(16)}`
+      this.miniStyle.baseTextColour = `#${Math.floor(Math.random() * 16777215).toString(16)}`
       // borderStyle: "solid",
       // borderWidth: 1,
       // baseBackgroundType: "solid",
