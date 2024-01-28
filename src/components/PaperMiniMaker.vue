@@ -9,16 +9,30 @@
                 Settings
               </template>
               <template v-slot:append>
-                <v-btn prepend-icon="mdi-shuffle" @click="randomiseStyle"><div class="d-none d-lg-block">Random</div></v-btn>
-                <v-btn prepend-icon="mdi-restart" @click="resetStyle"><div class="d-none d-lg-block">Reset</div></v-btn>
-                <v-btn prepend-icon="mdi-printer" @click="print"><div class="d-none d-lg-block">Print</div></v-btn>
+                <v-btn prepend-icon="mdi-shuffle" @click="randomiseStyle">
+                  <div class="d-none d-lg-block">Random</div>
+                </v-btn>
+                <v-btn prepend-icon="mdi-restart" @click="resetStyle">
+                  <div class="d-none d-lg-block">Reset</div>
+                </v-btn>
+                <v-btn prepend-icon="mdi-printer" @click="print">
+                  <div class="d-none d-lg-block">Print</div>
+                </v-btn>
               </template>
               <v-card-subtitle>
                 Adjust values here to change what the paper minis will look like.
               </v-card-subtitle>
               <v-card-text>
-                <v-slider label="Copies" v-model="copies" :min="1" :max="20" :step="1" thumb-label></v-slider>
                 <v-expansion-panels>
+                  <v-expansion-panel key="Layout">
+                    <v-expansion-panel-title>
+                      Layout
+                    </v-expansion-panel-title>
+                    <v-expansion-panel-text>
+                      <v-slider label="Copies" v-model="copies" :min="1" :max="20" :step="1" thumb-label></v-slider>
+                      <v-slider label="Margins" v-model="margins" :min="0" :max="0.5" :step="0.05" thumb-label></v-slider>
+                    </v-expansion-panel-text>
+                  </v-expansion-panel>
                   <v-expansion-panel key="Image">
                     <v-expansion-panel-title>
                       Token
@@ -35,20 +49,20 @@
                       </v-row>
                       <v-row>
                         <v-col md="9">
-                          <v-slider label="Rounded Edges" v-model="miniStyle.imageRoundedEdgeAmount" :min="0"
-                            :max="100" :step="1"
-                            thumb-label></v-slider>
+                          <v-slider label="Rounded Edges" v-model="miniStyle.imageRoundedEdgeAmount" :min="0" :max="100"
+                            :step="1" thumb-label></v-slider>
                         </v-col>
                         <v-col md="3">
-                          <v-btn color="primary" append-icon="mdi-palette"><div class="d-none d-lg-block">Background</div>
+                          <v-btn color="primary" append-icon="mdi-palette">
+                            <div class="d-none d-lg-block">Background</div>
                             <v-dialog v-model="imageBackgroundColourDialog" activator="parent" width="auto">
                               <v-card>
                                 <v-card-title>
                                   <span class="text-h5">Select colour</span>
                                 </v-card-title>
                                 <v-card-text>
-                                  <v-color-picker v-model="miniStyle.imageBackgroundColour" hide-inputs
-                                    show-swatches :swatches="swatches"></v-color-picker>
+                                  <v-color-picker v-model="miniStyle.imageBackgroundColour" hide-inputs show-swatches
+                                    :swatches="swatches"></v-color-picker>
                                 </v-card-text>
                                 <v-card-actions>
                                   <v-btn color="primary" block @click="imageBackgroundColourDialog = false">Close
@@ -72,27 +86,29 @@
                         <v-radio label="dashed" value="dashed"></v-radio>
                         <v-radio label="dotted" value="dotted"></v-radio>
                       </v-radio-group>
-                      <v-slider label="Width" v-model="miniStyle.borderWidth" :min="0" :max="5" :step="1" thumb-label></v-slider>
-                      
+                      <v-slider label="Width" v-model="miniStyle.borderWidth" :min="0" :max="5" :step="1"
+                        thumb-label></v-slider>
+
                       <v-col md="3">
-                          <v-btn color="primary" append-icon="mdi-palette"><div class="d-none d-lg-block">Border</div>
-                            <v-dialog v-model="borderColourDialog" activator="parent" width="auto">
-                              <v-card>
-                                <v-card-title>
-                                  <span class="text-h5">Select colour</span>
-                                </v-card-title>
-                                <v-card-text>
-                                  <v-color-picker v-model="miniStyle.borderColour"
-                                    show-swatches :swatches="swatches"></v-color-picker>
-                                </v-card-text>
-                                <v-card-actions>
-                                  <v-btn color="primary" block @click="borderColourDialog = false">Close
-                                    Dialog</v-btn>
-                                </v-card-actions>
-                              </v-card>
-                            </v-dialog>
-                          </v-btn>
-                        </v-col>
+                        <v-btn color="primary" append-icon="mdi-palette">
+                          <div class="d-none d-lg-block">Border</div>
+                          <v-dialog v-model="borderColourDialog" activator="parent" width="auto">
+                            <v-card>
+                              <v-card-title>
+                                <span class="text-h5">Select colour</span>
+                              </v-card-title>
+                              <v-card-text>
+                                <v-color-picker v-model="miniStyle.borderColour" show-swatches
+                                  :swatches="swatches"></v-color-picker>
+                              </v-card-text>
+                              <v-card-actions>
+                                <v-btn color="primary" block @click="borderColourDialog = false">Close
+                                  Dialog</v-btn>
+                              </v-card-actions>
+                            </v-card>
+                          </v-dialog>
+                        </v-btn>
+                      </v-col>
                     </v-expansion-panel-text>
                   </v-expansion-panel>
                   <v-expansion-panel key="Base">
@@ -108,23 +124,24 @@
                           <v-switch v-model="miniStyle.numbered" label="Numbered"></v-switch>
                         </v-col>
                         <v-col md="3">
-                          <v-text-field v-if="miniStyle.numbered" v-model="miniStyle.startNumber" persistent-hint hint="Start Number"
-                            single-line type="number" />
+                          <v-text-field v-if="miniStyle.numbered" v-model="miniStyle.startNumber" persistent-hint
+                            hint="Start Number" single-line type="number" />
                         </v-col>
                         <v-col md="9">
-                          <v-slider label="Rounded Edges" v-model="miniStyle.baseRoundedEdgeAmount" :min="0"
-                            :max="100" :step="1" thumb-label></v-slider>
+                          <v-slider label="Rounded Edges" v-model="miniStyle.baseRoundedEdgeAmount" :min="0" :max="100"
+                            :step="1" thumb-label></v-slider>
                         </v-col>
                         <v-col md="3">
-                          <v-btn color="primary" append-icon="mdi-palette"><div class="d-none d-lg-block">Background</div>
+                          <v-btn color="primary" append-icon="mdi-palette">
+                            <div class="d-none d-lg-block">Background</div>
                             <v-dialog v-model="baseBackgroundColourDialog" activator="parent" width="auto">
                               <v-card>
                                 <v-card-title>
                                   <span class="text-h5">Select base colour</span>
                                 </v-card-title>
                                 <v-card-text>
-                                  <v-color-picker v-model="miniStyle.baseBackgroundColour"
-                                    show-swatches :swatches="swatches"></v-color-picker>
+                                  <v-color-picker v-model="miniStyle.baseBackgroundColour" show-swatches
+                                    :swatches="swatches"></v-color-picker>
                                 </v-card-text>
                                 <v-card-actions>
                                   <v-btn color="primary" block @click="baseBackgroundColourDialog = false">Close
@@ -165,8 +182,10 @@
 
               <v-card-text>
                 <div id="print-me">
-                  <div v-for="(item, index) in copies" :key="index" style="float: left;" class="align-center text-center">
-                    <div :style="`${tokenStyle} ${reversedBaseStyle}`" :class="`${paperMini.size} ${paperMini.size}-half-base`">
+                  <div v-for="(item, index) in copies" :key="index" :style="`float: left; ${fullTokenStyle}`"
+                    class="align-center text-center">
+                    <div :style="`${tokenStyle} ${reversedBaseStyle}`"
+                      :class="`${paperMini.size} ${paperMini.size}-half-base`">
                       <div v-if="miniStyle.numbered" class="rotated">{{ index + Number(miniStyle.startNumber) }}</div>
                       <div v-else>&nbsp;</div>
                       <div v-if="paperMini.name" class="rotated">{{ paperMini.name }}</div>
@@ -230,17 +249,18 @@ export default defineComponent({
       startNumber: 1,
     },
     copies: 14,
+    margins: 0,
     imageBackgroundColourDialog: false,
     baseBackgroundColourDialog: false,
     borderColourDialog: false,
-    
+
     swatches: [
-        ['#000000', '#888888', '#FFFFFF'],
-        ['#FF0000', '#AA0000', '#550000'],
-        ['#FFFF00', '#AAAA00', '#555500'],
-        ['#00FF00', '#00AA00', '#005500'],
-        ['#0000FF', '#0000AA', '#000055'],
-      ],
+      ['#000000', '#888888', '#FFFFFF'],
+      ['#FF0000', '#AA0000', '#550000'],
+      ['#FFFF00', '#AAAA00', '#555500'],
+      ['#00FF00', '#00AA00', '#005500'],
+      ['#0000FF', '#0000AA', '#000055'],
+    ],
     sizes: [
       {
         title: "Tiny",
@@ -301,6 +321,9 @@ export default defineComponent({
     ]
   }),
   computed: {
+    fullTokenStyle() {
+      return `margin: ${this.margins}in`
+    },
     imageStyle() {
       const roundedEdgeMeasurement = this.sizes.filter(s => s.value === this.paperMini.size)[0]!.width * (this.miniStyle.imageRoundedEdgeAmount / 200)
       return `border-style: ${this.miniStyle.borderStyle};` +
@@ -315,15 +338,15 @@ export default defineComponent({
       return `border-style: ${this.miniStyle.borderStyle};` +
         `border-width: ${this.miniStyle.borderWidth}px;` +
         `border-color: ${this.miniStyle.borderColour};`
-        
+
     },
     baseStyle() {
       const roundedEdgeMeasurement = this.sizes.filter(s => s.value === this.paperMini.size)[0]!.width * (this.miniStyle.baseRoundedEdgeAmount / 200)
       switch (this.miniStyle.baseBackgroundType) {
         case "solid":
           return `background-color: ${this.miniStyle.baseBackgroundColour} !important; print-color-adjust: exact;` +
-        `border-bottom-left-radius: ${roundedEdgeMeasurement}in;` +
-        `border-bottom-right-radius: ${roundedEdgeMeasurement}in;`
+            `border-bottom-left-radius: ${roundedEdgeMeasurement}in;` +
+            `border-bottom-right-radius: ${roundedEdgeMeasurement}in;`
         default:
           return ""
       }
@@ -333,8 +356,8 @@ export default defineComponent({
       switch (this.miniStyle.baseBackgroundType) {
         case "solid":
           return `background-color: ${this.miniStyle.baseBackgroundColour} !important; print-color-adjust: exact;` +
-        `border-top-left-radius: ${roundedEdgeMeasurement}in;` +
-        `border-top-right-radius: ${roundedEdgeMeasurement}in;`
+            `border-top-left-radius: ${roundedEdgeMeasurement}in;` +
+            `border-top-right-radius: ${roundedEdgeMeasurement}in;`
         default:
           return ""
       }
@@ -342,7 +365,7 @@ export default defineComponent({
     }
   },
   methods: {
-    resetStyle(){
+    resetStyle() {
       this.miniStyle.imageBackgroundColour = `#FFFFFF`
       this.miniStyle.imageRoundedEdgeAmount = 50
       this.miniStyle.baseBackgroundColour = `#DDDDDD`
@@ -350,11 +373,11 @@ export default defineComponent({
       this.miniStyle.borderColour = `#888888`
     },
     randomiseStyle() {
-      this.miniStyle.imageBackgroundColour = `#${Math.floor(Math.random()*16777215).toString(16)}`
-      this.miniStyle.imageRoundedEdgeAmount = Math.floor(Math.random()*100)
-      this.miniStyle.baseBackgroundColour = `#${Math.floor(Math.random()*16777215).toString(16)}`
-      this.miniStyle.baseRoundedEdgeAmount = Math.floor(Math.random()*100)
-      this.miniStyle.borderColour = `#${Math.floor(Math.random()*16777215).toString(16)}`
+      this.miniStyle.imageBackgroundColour = `#${Math.floor(Math.random() * 16777215).toString(16)}`
+      this.miniStyle.imageRoundedEdgeAmount = Math.floor(Math.random() * 100)
+      this.miniStyle.baseBackgroundColour = `#${Math.floor(Math.random() * 16777215).toString(16)}`
+      this.miniStyle.baseRoundedEdgeAmount = Math.floor(Math.random() * 100)
+      this.miniStyle.borderColour = `#${Math.floor(Math.random() * 16777215).toString(16)}`
       // borderStyle: "solid",
       // borderWidth: 1,
       // baseBackgroundType: "solid",
