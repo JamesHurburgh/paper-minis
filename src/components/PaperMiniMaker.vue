@@ -9,8 +9,9 @@
                 Settings
               </template>
               <template v-slot:append>
-                <v-btn prepend-icon="mdi-shuffle" @click="randomiseStyle">Random</v-btn>
-                <v-btn prepend-icon="mdi-printer" @click="print">Print</v-btn>
+                <v-btn prepend-icon="mdi-shuffle" @click="randomiseStyle"><div class="d-none d-lg-block">Random</div></v-btn>
+                <v-btn prepend-icon="mdi-restart" @click="resetStyle"><div class="d-none d-lg-block">Reset</div></v-btn>
+                <v-btn prepend-icon="mdi-printer" @click="print"><div class="d-none d-lg-block">Print</div></v-btn>
               </template>
               <v-card-subtitle>
                 Adjust values here to change what the paper minis will look like.
@@ -39,7 +40,7 @@
                             thumb-label></v-slider>
                         </v-col>
                         <v-col md="3">
-                          <v-btn color="primary">Background Colour
+                          <v-btn color="primary" append-icon="mdi-palette"><div class="d-none d-lg-block">Background</div>
                             <v-dialog v-model="imageBackgroundColourDialog" activator="parent" width="auto">
                               <v-card>
                                 <v-card-title>
@@ -95,7 +96,7 @@
                             :max="100" :step="1" thumb-label></v-slider>
                         </v-col>
                         <v-col md="3">
-                          <v-btn color="primary">Background Colour
+                          <v-btn color="primary"><div class="d-none d-lg-block">Background</div>
                             <v-dialog v-model="baseBackgroundColourDialog" activator="parent" width="auto">
                               <v-card>
                                 <v-card-title>
@@ -197,12 +198,12 @@ export default defineComponent({
       size: "medium",
     },
     miniStyle: {
-      imageBackgroundColour: "white",
+      imageBackgroundColour: "#FFFFFF",
       imageRoundedEdgeAmount: 50,
       borderStyle: "solid",
       borderWidth: 1,
       baseBackgroundType: "solid",
-      baseBackgroundColour: "darkgrey",
+      baseBackgroundColour: "#DDDDDD",
       baseRoundedEdgeAmount: 100,
       numbered: true,
       startNumber: 1,
@@ -315,6 +316,12 @@ export default defineComponent({
     }
   },
   methods: {
+    resetStyle(){
+      this.miniStyle.imageBackgroundColour = `#FFFFFF`
+      this.miniStyle.imageRoundedEdgeAmount = 50
+      this.miniStyle.baseBackgroundColour = `#DDDDDD`
+      this.miniStyle.baseRoundedEdgeAmount = 100
+    },
     randomiseStyle() {
       this.miniStyle.imageBackgroundColour = `#${Math.floor(Math.random()*16777215).toString(16)}`
       this.miniStyle.imageRoundedEdgeAmount = Math.floor(Math.random()*100)
