@@ -155,6 +155,14 @@
                         </v-col>
                       </v-row>
                       <v-row>
+                        <v-col md="9">
+                          <v-select label="Font Family" v-model="fontFamily" :items="fontFamilies" item-value="value" return-object>
+                            <template v-slot:item="{ props, item }">
+                              <v-list-item v-bind="props" :style="`font-family: ${item.value};`" :title="item.title">
+                              </v-list-item>
+                            </template>
+                          </v-select>
+                        </v-col>
                         <v-col md="3">
                           <v-btn color="primary" append-icon="mdi-palette">
                             <div>Text</div>
@@ -345,6 +353,52 @@ export default defineComponent({
         width: "8.5",
         height: "11"
       }
+    ],
+    fontFamily: {
+      title: "Georgia",
+      value: 'Georgia, serif'
+    },
+    fontFamilies: [
+      {
+        title: "Times New Roman",
+        value: '"Times New Roman", Times, serif'
+      },
+      {
+        title: "Lucida Console",
+        value: '"Lucida Console", Courier, monospace'
+      },
+      {
+        title: "Bradley Hand",
+        value: '"Bradley Hand", cursive'
+      },
+      {
+        title: "Georgia",
+        value: 'Georgia, serif'
+      },
+      {
+        title: "Garamond",
+        value: 'Garamond, serif'
+      },
+      {
+        title: "Arial",
+        value: 'Arial, Helvetica, sans-serif'
+      },
+      {
+        title: "Tahoma",
+        value: 'Tahoma, Verdana, sans-serif'
+      },
+      {
+        title: "Brush Script",
+        value: '"Brush Script MT", cursive'
+      },
+      {
+        title: "Copperplate",
+        value: 'Copperplate, Papyrus, fantasy'
+      },
+      {
+        title: "Courier",
+        value: '"Courier New", Courier, monospace'
+      },
     ]
   }),
   computed: {
@@ -374,7 +428,8 @@ export default defineComponent({
           return `background-color: ${this.miniStyle.baseBackgroundColour} !important; print-color-adjust: exact;` +
             `border-bottom-left-radius: ${roundedEdgeMeasurement}in;` +
             `border-bottom-right-radius: ${roundedEdgeMeasurement}in;` +
-            `color: ${this.miniStyle.baseTextColour}`
+            `color: ${this.miniStyle.baseTextColour};` +
+            `font-family: ${this.fontFamilies.filter(ff => ff.title === this.fontFamily.title)[0].value};`
         default:
           return ""
       }
@@ -386,7 +441,8 @@ export default defineComponent({
           return `background-color: ${this.miniStyle.baseBackgroundColour} !important; print-color-adjust: exact;` +
             `border-top-left-radius: ${roundedEdgeMeasurement}in;` +
             `border-top-right-radius: ${roundedEdgeMeasurement}in;` +
-            `color: ${this.miniStyle.baseTextColour}`
+            `color: ${this.miniStyle.baseTextColour};` +
+            `font-family: ${this.fontFamilies.filter(ff => ff.title === this.fontFamily.title)[0].value};`
         default:
           return ""
       }
