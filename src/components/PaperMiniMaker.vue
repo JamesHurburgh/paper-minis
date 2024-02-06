@@ -163,8 +163,8 @@
                           </v-select>
                         </v-col>
                         <v-col md="3">
-                          <v-select v-model="this.style.fontSize" label="Font Size" :items="Array.from({ length: 30 }, (v, i) => i)"></v-select>
-
+                          <v-select v-model="style.fontSize" label="Font Size"
+                            :items="Array.from({ length: 30 }, (v, i) => i)"></v-select>
                         </v-col>
                         <v-col md="3">
                           <v-btn color="primary" append-icon="mdi-palette">
