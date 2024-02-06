@@ -64,11 +64,10 @@
                           <v-text-field v-model="token.name" label="Name" clearable></v-text-field>
                         </v-col>
                         <v-col md="3">
-                          <v-select label="Size" v-model="token.size" :items="sizes"
-                            :item-props="itemProps"></v-select>
+                          <v-select label="Size" v-model="token.size" :items="sizes" :item-props="itemProps"></v-select>
                         </v-col>
                         <v-col md="6">
-                          <v-slider label="Rounded Edges" v-model="miniStyle.imageRoundedEdgeAmount" :min="0" :max="100"
+                          <v-slider label="Rounded Edges" v-model="style.imageRoundedEdgeAmount" :min="0" :max="100"
                             :step="1" thumb-label></v-slider>
                         </v-col>
                         <v-col md="3">
@@ -80,7 +79,7 @@
                                   <span class="text-h5">Select colour</span>
                                 </v-card-title>
                                 <v-card-text>
-                                  <v-color-picker v-model="miniStyle.imageBackgroundColour" hide-inputs show-swatches
+                                  <v-color-picker v-model="style.imageBackgroundColour" hide-inputs show-swatches
                                     :swatches="swatches"></v-color-picker>
                                 </v-card-text>
                                 <v-card-actions>
@@ -99,39 +98,39 @@
                       Style
                     </v-expansion-panel-title>
                     <v-expansion-panel-text>
-                      <v-radio-group label="Border Style" v-model="miniStyle.borderStyle">
+                      <v-radio-group label="Border Style" v-model="style.borderStyle">
                         <v-radio label="solid" value="solid"></v-radio>
                         <v-radio label="dashed" value="dashed"></v-radio>
                         <v-radio label="dotted" value="dotted"></v-radio>
                       </v-radio-group>
                       <v-row>
 
-                      <v-col md="9">
-                      <v-slider label="Border Width" v-model="miniStyle.borderWidth" :min="0" :max="5" :step="1"
-                        thumb-label></v-slider>
-</v-col>
-                      <v-col md="3">
-                        <v-btn color="primary" append-icon="mdi-palette">
-                          <div class="d-none d-lg-block">Border</div>
-                          <v-dialog v-model="borderColourDialog" activator="parent" width="auto">
-                            <v-card>
-                              <v-card-title>
-                                <span class="text-h5">Select colour</span>
-                              </v-card-title>
-                              <v-card-text>
-                                <v-color-picker v-model="miniStyle.borderColour" show-swatches
-                                  :swatches="swatches"></v-color-picker>
-                              </v-card-text>
-                              <v-card-actions>
-                                <v-btn color="primary" block @click="borderColourDialog = false">Close
-                                  Dialog</v-btn>
-                              </v-card-actions>
-                            </v-card>
-                          </v-dialog>
-                        </v-btn>
-                      </v-col>
                         <v-col md="9">
-                          <v-slider label="Rounded Edges" v-model="miniStyle.baseRoundedEdgeAmount" :min="0" :max="100"
+                          <v-slider label="Border Width" v-model="style.borderWidth" :min="0" :max="5" :step="1"
+                            thumb-label></v-slider>
+                        </v-col>
+                        <v-col md="3">
+                          <v-btn color="primary" append-icon="mdi-palette">
+                            <div class="d-none d-lg-block">Border</div>
+                            <v-dialog v-model="borderColourDialog" activator="parent" width="auto">
+                              <v-card>
+                                <v-card-title>
+                                  <span class="text-h5">Select colour</span>
+                                </v-card-title>
+                                <v-card-text>
+                                  <v-color-picker v-model="style.borderColour" show-swatches
+                                    :swatches="swatches"></v-color-picker>
+                                </v-card-text>
+                                <v-card-actions>
+                                  <v-btn color="primary" block @click="borderColourDialog = false">Close
+                                    Dialog</v-btn>
+                                </v-card-actions>
+                              </v-card>
+                            </v-dialog>
+                          </v-btn>
+                        </v-col>
+                        <v-col md="9">
+                          <v-slider label="Rounded Edges" v-model="style.baseRoundedEdgeAmount" :min="0" :max="100"
                             :step="1" thumb-label></v-slider>
                         </v-col>
                         <v-col md="3">
@@ -143,7 +142,7 @@
                                   <span class="text-h5">Select base colour</span>
                                 </v-card-title>
                                 <v-card-text>
-                                  <v-color-picker v-model="miniStyle.baseBackgroundColour" show-swatches
+                                  <v-color-picker v-model="style.baseBackgroundColour" show-swatches
                                     :swatches="swatches"></v-color-picker>
                                 </v-card-text>
                                 <v-card-actions>
@@ -155,8 +154,8 @@
                           </v-btn>
                         </v-col>
                         <v-col md="9">
-                          <v-select label="Font Family" v-model="fontFamily" :items="fontFamilies" item-value="value"
-                            return-object>
+                          <v-select label="Font Family" v-model="style.fontFamily" :items="fontFamilies"
+                            item-value="value" return-object>
                             <template v-slot:item="{ props, item }">
                               <v-list-item v-bind="props" :style="`font-family: ${item.value};`" :title="item.title">
                               </v-list-item>
@@ -172,7 +171,7 @@
                                   <span class="text-h5">Select text colour</span>
                                 </v-card-title>
                                 <v-card-text>
-                                  <v-color-picker v-model="miniStyle.baseTextColour" show-swatches
+                                  <v-color-picker v-model="style.baseTextColour" show-swatches
                                     :swatches="swatches"></v-color-picker>
                                 </v-card-text>
                                 <v-card-actions>
@@ -217,15 +216,13 @@
                 <div id="print-me">
                   <div v-for="(item, index) in sheet.copies" :key="index" :style="`float: left; ${fullTokenStyle}`"
                     class="align-center text-center">
-                    <div :style="`${tokenStyle} ${reversedBaseStyle}`"
-                      :class="`${token.size} ${token.size}-half-base`">
+                    <div :style="`${tokenStyle} ${reversedBaseStyle}`" :class="`${token.size} ${token.size}-half-base`">
                       <div v-if="sheet.numbered" class="rotated">{{ index + Number(sheet.startNumber) }}</div>
                       <div v-else>&nbsp;</div>
                       <div v-if="token.name" class="rotated">{{ token.name }}</div>
                       <div v-else>&nbsp;</div>
                     </div>
-                    <v-img :style="imageStyle" :class="`${token.size} flip-vertical`"
-                      :src="`${token.imageUrl}`" />
+                    <v-img :style="imageStyle" :class="`${token.size} flip-vertical`" :src="`${token.imageUrl}`" />
                     <v-img :style="imageStyle" :class="`${token.size}`" :src="`${token.imageUrl}`" />
                     <div :style="`${tokenStyle} ${baseStyle}`" :class="`${token.size} ${token.size}-half-base`">
                       <div v-if="token.name">{{ token.name }}</div>
@@ -269,7 +266,7 @@ export default defineComponent({
       name: "Werewolf",
       size: "medium",
     },
-    miniStyle: {
+    style: {
       imageBackgroundColour: "#FFFFFF",
       imageRoundedEdgeAmount: 50,
       borderStyle: "solid",
@@ -279,6 +276,10 @@ export default defineComponent({
       baseBackgroundColour: "#DDDDDD",
       baseTextColour: "#000000",
       baseRoundedEdgeAmount: 100,
+      fontFamily: {
+        title: "Georgia",
+        value: 'Georgia, serif'
+      },
     },
     sheet: {
       copies: 14,
@@ -302,8 +303,10 @@ export default defineComponent({
         baseBackgroundColour: "#DDDDDD",
         baseTextColour: "#000000",
         baseRoundedEdgeAmount: 100,
-        numbered: true,
-        startNumber: 1,
+        fontFamily: {
+          title: "Georgia",
+          value: 'Georgia, serif'
+        },
       },
       {
         name: "flat",
@@ -316,8 +319,10 @@ export default defineComponent({
         baseBackgroundColour: "#FFFFFF",
         baseTextColour: "#000000",
         baseRoundedEdgeAmount: 0,
-        numbered: true,
-        startNumber: 1,
+        fontFamily: {
+          title: "Lucida Console",
+          value: '"Lucida Console", Courier, monospace'
+        },
       }
     ],
 
@@ -386,10 +391,6 @@ export default defineComponent({
         height: "11"
       }
     ],
-    fontFamily: {
-      title: "Georgia",
-      value: 'Georgia, serif'
-    },
     fontFamilies: [
       {
         title: "Times New Roman",
@@ -431,6 +432,10 @@ export default defineComponent({
         title: "Courier",
         value: '"Courier New", Courier, monospace'
       },
+      {
+        title: "Tangerine",
+        value: "'Tangerine', serif"
+      }
     ]
   }),
   computed: {
@@ -438,43 +443,43 @@ export default defineComponent({
       return `margin: ${this.sheet.margins}in`
     },
     imageStyle() {
-      const roundedEdgeMeasurement = this.sizes.filter(s => s.value === this.token.size)[0]!.width * (this.miniStyle.imageRoundedEdgeAmount / 200)
-      return `border-style: ${this.miniStyle.borderStyle};` +
-        `border-width: ${this.miniStyle.borderWidth}px;` +
+      const roundedEdgeMeasurement = this.sizes.filter(s => s.value === this.token.size)[0]!.width * (this.style.imageRoundedEdgeAmount / 200)
+      return `border-style: ${this.style.borderStyle};` +
+        `border-width: ${this.style.borderWidth}px;` +
         `border-top-left-radius: ${roundedEdgeMeasurement}in;` +
         `border-top-right-radius: ${roundedEdgeMeasurement}in;` +
-        `background-color: ${this.miniStyle.imageBackgroundColour} !important; print-color-adjust: exact;` +
-        `border-color: ${this.miniStyle.borderColour};`
+        `background-color: ${this.style.imageBackgroundColour} !important; print-color-adjust: exact;` +
+        `border-color: ${this.style.borderColour};`
     },
     tokenStyle() {
 
-      return `border-style: ${this.miniStyle.borderStyle};` +
-        `border-width: ${this.miniStyle.borderWidth}px;` +
-        `border-color: ${this.miniStyle.borderColour};`
+      return `border-style: ${this.style.borderStyle};` +
+        `border-width: ${this.style.borderWidth}px;` +
+        `border-color: ${this.style.borderColour};`
 
     },
     baseStyle() {
-      const roundedEdgeMeasurement = this.sizes.filter(s => s.value === this.token.size)[0]!.width * (this.miniStyle.baseRoundedEdgeAmount / 200)
-      switch (this.miniStyle.baseBackgroundType) {
+      const roundedEdgeMeasurement = this.sizes.filter(s => s.value === this.token.size)[0]!.width * (this.style.baseRoundedEdgeAmount / 200)
+      switch (this.style.baseBackgroundType) {
         case "solid":
-          return `background-color: ${this.miniStyle.baseBackgroundColour} !important; print-color-adjust: exact;` +
+          return `background-color: ${this.style.baseBackgroundColour} !important; print-color-adjust: exact;` +
             `border-bottom-left-radius: ${roundedEdgeMeasurement}in;` +
             `border-bottom-right-radius: ${roundedEdgeMeasurement}in;` +
-            `color: ${this.miniStyle.baseTextColour};` +
-            `font-family: ${this.fontFamilies.filter(ff => ff.title === this.fontFamily.title)[0].value};`
+            `color: ${this.style.baseTextColour};` +
+            `font-family: ${this.fontFamilies.filter(ff => ff.title === this.style.fontFamily.title)[0].value};`
         default:
           return ""
       }
     },
     reversedBaseStyle() {
-      const roundedEdgeMeasurement = this.sizes.filter(s => s.value === this.token.size)[0]!.width * (this.miniStyle.baseRoundedEdgeAmount / 200)
-      switch (this.miniStyle.baseBackgroundType) {
+      const roundedEdgeMeasurement = this.sizes.filter(s => s.value === this.token.size)[0]!.width * (this.style.baseRoundedEdgeAmount / 200)
+      switch (this.style.baseBackgroundType) {
         case "solid":
-          return `background-color: ${this.miniStyle.baseBackgroundColour} !important; print-color-adjust: exact;` +
+          return `background-color: ${this.style.baseBackgroundColour} !important; print-color-adjust: exact;` +
             `border-top-left-radius: ${roundedEdgeMeasurement}in;` +
             `border-top-right-radius: ${roundedEdgeMeasurement}in;` +
-            `color: ${this.miniStyle.baseTextColour};` +
-            `font-family: ${this.fontFamilies.filter(ff => ff.title === this.fontFamily.title)[0].value};`
+            `color: ${this.style.baseTextColour};` +
+            `font-family: ${this.fontFamilies.filter(ff => ff.title === this.style.fontFamily.title)[0].value};`
         default:
           return ""
       }
@@ -483,20 +488,22 @@ export default defineComponent({
   },
   methods: {
     resetStyle() {
-      this.miniStyle.imageBackgroundColour = `#FFFFFF`
-      this.miniStyle.imageRoundedEdgeAmount = 50
-      this.miniStyle.baseBackgroundColour = `#DDDDDD`
-      this.miniStyle.baseRoundedEdgeAmount = 100
-      this.miniStyle.borderColour = `#888888`
-      this.miniStyle.baseTextColour = `#000000`
+      this.style.imageBackgroundColour = `#FFFFFF`
+      this.style.imageRoundedEdgeAmount = 50
+      this.style.baseBackgroundColour = `#DDDDDD`
+      this.style.baseRoundedEdgeAmount = 100
+      this.style.borderColour = `#888888`
+      this.style.baseTextColour = `#000000`
+      this.style.fontFamily = { title: "Georgia", value: 'Georgia, serif' }
     },
     randomiseStyle() {
-      this.miniStyle.imageBackgroundColour = `#${Math.floor(Math.random() * 16777215).toString(16)}`
-      this.miniStyle.imageRoundedEdgeAmount = Math.floor(Math.random() * 100)
-      this.miniStyle.baseBackgroundColour = `#${Math.floor(Math.random() * 16777215).toString(16)}`
-      this.miniStyle.baseRoundedEdgeAmount = Math.floor(Math.random() * 100)
-      this.miniStyle.borderColour = `#${Math.floor(Math.random() * 16777215).toString(16)}`
-      this.miniStyle.baseTextColour = `#${Math.floor(Math.random() * 16777215).toString(16)}`
+      this.style.imageBackgroundColour = `#${Math.floor(Math.random() * 16777215).toString(16)}`
+      this.style.imageRoundedEdgeAmount = Math.floor(Math.random() * 100)
+      this.style.baseBackgroundColour = `#${Math.floor(Math.random() * 16777215).toString(16)}`
+      this.style.baseRoundedEdgeAmount = Math.floor(Math.random() * 100)
+      this.style.borderColour = `#${Math.floor(Math.random() * 16777215).toString(16)}`
+      this.style.baseTextColour = `#${Math.floor(Math.random() * 16777215).toString(16)}`
+      this.style.fontFamily = this.fontFamilies[Math.floor(Math.random() * this.fontFamilies.length)]
       // borderStyle: "solid",
       // borderWidth: 1,
       // baseBackgroundType: "solid",
