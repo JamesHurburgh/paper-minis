@@ -182,6 +182,29 @@
                             </v-dialog>
                           </v-btn>
                         </v-col>
+                        <v-col>
+                          Text Outline Width
+                        </v-col>
+                        <v-col md="3">
+                          <v-btn color="primary" append-icon="mdi-palette">
+                            <div>Text Outline Colour</div>
+                            <v-dialog v-model="baseTextOutlineColourDialog" activator="parent" width="auto">
+                              <v-card>
+                                <v-card-title>
+                                  <span class="text-h5">Select text outline colour</span>
+                                </v-card-title>
+                                <v-card-text>
+                                  <v-color-picker v-model="style.baseTextOutlineColour" show-swatches
+                                    :swatches="swatches"></v-color-picker>
+                                </v-card-text>
+                                <v-card-actions>
+                                  <v-btn color="primary" block @click="baseTextOutlineColourDialog = false">Close
+                                    Dialog</v-btn>
+                                </v-card-actions>
+                              </v-card>
+                            </v-dialog>
+                          </v-btn>
+                        </v-col>
 
                       </v-row>
                     </v-expansion-panel-text>
@@ -275,6 +298,7 @@ export default defineComponent({
       baseBackgroundType: "solid",
       baseBackgroundColour: "#DDDDDD",
       baseTextColour: "#000000",
+      baseTextOutlineColour: "#111111",
       baseRoundedEdgeAmount: 100,
       fontFamily: {
         title: "Georgia",
@@ -291,6 +315,7 @@ export default defineComponent({
     baseBackgroundColourDialog: false,
     borderColourDialog: false,
     baseTextColourDialog: false,
+    baseTextOutlineColourDialog: false,
     presetStyles: [
       {
         name: "default",
@@ -466,7 +491,9 @@ export default defineComponent({
             `border-bottom-left-radius: ${roundedEdgeMeasurement}in;` +
             `border-bottom-right-radius: ${roundedEdgeMeasurement}in;` +
             `color: ${this.style.baseTextColour};` +
-            `font-family: ${this.fontFamilies.filter(ff => ff.title === this.style.fontFamily.title)[0].value};`
+            `font-family: ${this.fontFamilies.filter(ff => ff.title === this.style.fontFamily.title)[0].value};` +
+            `-webkit-text-stroke-width: 1px;` +
+            `-webkit-text-stroke-color: ${this.style.baseTextOutlineColour};`
         default:
           return ""
       }
@@ -479,7 +506,9 @@ export default defineComponent({
             `border-top-left-radius: ${roundedEdgeMeasurement}in;` +
             `border-top-right-radius: ${roundedEdgeMeasurement}in;` +
             `color: ${this.style.baseTextColour};` +
-            `font-family: ${this.fontFamilies.filter(ff => ff.title === this.style.fontFamily.title)[0].value};`
+            `font-family: ${this.fontFamilies.filter(ff => ff.title === this.style.fontFamily.title)[0].value};` +
+            `-webkit-text-stroke-width: 1px;` +
+            `-webkit-text-stroke-color: ${this.style.baseTextOutlineColour};`
         default:
           return ""
       }
