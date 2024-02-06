@@ -163,6 +163,10 @@
                           </v-select>
                         </v-col>
                         <v-col md="3">
+                          <v-select v-model="this.style.fontSize" label="Font Size" :items="Array.from({ length: 30 }, (v, i) => i)"></v-select>
+
+                        </v-col>
+                        <v-col md="3">
                           <v-btn color="primary" append-icon="mdi-palette">
                             <div>Text</div>
                             <v-dialog v-model="baseTextColourDialog" activator="parent" width="auto">
@@ -304,6 +308,7 @@ export default defineComponent({
         title: "Georgia",
         value: 'Georgia, serif'
       },
+      fontSize: 14,
     },
     sheet: {
       copies: 14,
@@ -492,6 +497,7 @@ export default defineComponent({
             `border-bottom-right-radius: ${roundedEdgeMeasurement}in;` +
             `color: ${this.style.baseTextColour};` +
             `font-family: ${this.fontFamilies.filter(ff => ff.title === this.style.fontFamily.title)[0].value};` +
+            `font-size: ${this.style.fontSize}px;` +
             `-webkit-text-stroke-width: 1px;` +
             `-webkit-text-stroke-color: ${this.style.baseTextOutlineColour};`
         default:
@@ -507,6 +513,7 @@ export default defineComponent({
             `border-top-right-radius: ${roundedEdgeMeasurement}in;` +
             `color: ${this.style.baseTextColour};` +
             `font-family: ${this.fontFamilies.filter(ff => ff.title === this.style.fontFamily.title)[0].value};` +
+            `font-size: ${this.style.fontSize}px;` +
             `-webkit-text-stroke-width: 1px;` +
             `-webkit-text-stroke-color: ${this.style.baseTextOutlineColour};`
         default:
