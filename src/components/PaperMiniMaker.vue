@@ -246,10 +246,10 @@
                 <div id="print-me">
                   <div v-for="(item, index) in sheet.copies" :key="index" :style="`float: left; ${fullTokenStyle}`"
                     class="align-center text-center">
-                    <div :style="`${tokenStyle} ${reversedBaseStyle}`" :class="`${token.size} ${token.size}-half-base`">
-                      <div v-if="sheet.numbered" class="rotated">{{ index + Number(sheet.startNumber) }}</div>
+                    <div :style="`${tokenStyle} ${baseStyle}`" :class="`rotated ${token.size} ${token.size}-half-base`">
+                      <div v-if="token.name">{{ token.name }}</div>
                       <div v-else>&nbsp;</div>
-                      <div v-if="token.name" class="rotated">{{ token.name }}</div>
+                      <div v-if="sheet.numbered">{{ index + Number(sheet.startNumber) }}</div>
                       <div v-else>&nbsp;</div>
                     </div>
                     <v-img :style="imageStyle" :class="`${token.size} flip-vertical`" :src="`${token.imageUrl}`" />
@@ -294,7 +294,7 @@ export default defineComponent({
     token: {
       imageUrl: "https://i.imgur.com/bYJ3gBl.png",
       name: "Werewolf",
-      size: "medium",
+      size: "large",
     },
     style: {
       imageBackgroundColour: "#FFFFFF",
@@ -506,23 +506,6 @@ export default defineComponent({
         default:
           return ""
       }
-    },
-    reversedBaseStyle() {
-      const roundedEdgeMeasurement = this.sizes.filter(s => s.value === this.token.size)[0]!.width * (this.style.baseRoundedEdgeAmount / 200)
-      switch (this.style.baseBackgroundType) {
-        case "solid":
-          return `background-color: ${this.style.baseBackgroundColour} !important; print-color-adjust: exact;` +
-            `border-top-left-radius: ${roundedEdgeMeasurement}in;` +
-            `border-top-right-radius: ${roundedEdgeMeasurement}in;` +
-            `color: ${this.style.baseTextColour};` +
-            `font-family: ${this.fontFamilies.filter(ff => ff.title === this.style.fontFamily.title)[0].value};` +
-            `font-size: ${this.style.fontSize}px;` +
-            `-webkit-text-stroke-width: 1px;` +
-            `-webkit-text-stroke-color: ${this.style.baseTextOutlineColour};`
-        default:
-          return ""
-      }
-
     }
   },
   methods: {
