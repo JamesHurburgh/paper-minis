@@ -1,7 +1,7 @@
 <template>
-  <v-container class="fill-height">
+  <v-container class="fill-height" :class="{'pa-0 ma-0': $vuetify.display.smAndDown}">
     <v-responsive class="fill-height">
-      <v-container fluid>
+      <v-container fluid :class="{'pa-0 ma-0': $vuetify.display.smAndDown}">
         <v-row>
           <v-col md="6">
             <v-card prepend-icon="mdi-cog">
@@ -22,8 +22,8 @@
               <v-card-subtitle>
                 Token style and layout.
               </v-card-subtitle>
-              <v-card-text>
-                <v-expansion-panels>
+              <v-card-text :class="{'pa-0 ma-0': $vuetify.display.smAndDown}">
+                <v-expansion-panels variant="accordion">
                   <v-expansion-panel key="Layout">
                     <v-expansion-panel-title>
                       Sheet
@@ -31,17 +31,20 @@
                     <v-expansion-panel-text>
                       <v-row>
                         <v-col md="12">
-                          <v-slider md="9" label="Copies" v-model="sheet.copies" :min="1" :max="20" :step="1"
+                          <div class="text-caption">Number of tokens</div>
+                          <v-slider md="9" v-model="sheet.copies" :min="1" :max="20" :step="1"
                             thumb-label></v-slider>
                         </v-col>
                       </v-row>
                       <v-row>
                         <v-col md="6">
-                          <v-slider label="Margins" v-model="sheet.margins" :min="0" :max="0.5" :step="0.05"
+                          <div class="text-caption">Margins</div>
+                          <v-slider v-model="sheet.margins" :min="0" :max="0.5" :step="0.05"
                             thumb-label></v-slider>
                         </v-col>
                         <v-col md="3">
-                          <v-switch density="compact" v-model="sheet.numbered" label="Numbered"></v-switch>
+                          <div class="text-caption">Numbered</div>
+                          <v-switch density="compact" v-model="sheet.numbered"></v-switch>
                         </v-col>
                         <v-col md="3">
                           <v-text-field density="compact" v-if="sheet.numbered" v-model="sheet.startNumber"
