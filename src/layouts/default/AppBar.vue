@@ -1,5 +1,5 @@
 <template>
-  <v-app-bar flat class="d-print-none">
+  <v-app-bar class="d-print-none">
     <v-app-bar-title>
       <v-icon icon="mdi-account-box-outline" />
       Paper Minis
