@@ -156,7 +156,7 @@
                             </v-dialog>
                           </v-btn>
                         </v-col>
-                        <v-col md="9">
+                        <v-col md="6">
                           <v-select label="Font Family" v-model="style.fontFamily" :items="fontFamilies"
                             item-value="value" return-object>
                             <template v-slot:item="{ props, item }">
@@ -189,8 +189,9 @@
                             </v-dialog>
                           </v-btn>
                         </v-col>
-                        <v-col>
-                          Text Outline Width
+                        <v-col md="3">
+                          <v-select v-model="style.baseTextOutlineWidth" label="Outline Width"
+                            :items="Array.from({ length: 3 }, (v, i) => i)"></v-select>
                         </v-col>
                         <v-col md="3">
                           <v-btn color="primary" append-icon="mdi-palette">
@@ -294,7 +295,7 @@ export default defineComponent({
     token: {
       imageUrl: "https://i.imgur.com/bYJ3gBl.png",
       name: "Werewolf",
-      size: "large",
+      size: "medium",
     },
     style: {
       imageBackgroundColour: "#FFFFFF",
@@ -306,6 +307,7 @@ export default defineComponent({
       baseBackgroundColour: "#DDDDDD",
       baseTextColour: "#000000",
       baseTextOutlineColour: "#111111",
+      baseTextOutlineWidth: 1,
       baseRoundedEdgeAmount: 100,
       fontFamily: {
         title: "Georgia",
@@ -335,6 +337,8 @@ export default defineComponent({
         baseBackgroundType: "solid",
         baseBackgroundColour: "#DDDDDD",
         baseTextColour: "#000000",
+        baseTextOutlineColour: "#111111",
+        baseTextOutlineWidth: 1,
         baseRoundedEdgeAmount: 100,
         fontFamily: {
           title: "Georgia",
@@ -351,6 +355,8 @@ export default defineComponent({
         baseBackgroundType: "solid",
         baseBackgroundColour: "#FFFFFF",
         baseTextColour: "#000000",
+        baseTextOutlineColour: "#111111",
+        baseTextOutlineWidth: 1,
         baseRoundedEdgeAmount: 0,
         fontFamily: {
           title: "Lucida Console",
@@ -501,7 +507,7 @@ export default defineComponent({
             `color: ${this.style.baseTextColour};` +
             `font-family: ${this.fontFamilies.filter(ff => ff.title === this.style.fontFamily.title)[0].value};` +
             `font-size: ${this.style.fontSize}px;` +
-            `-webkit-text-stroke-width: 1px;` +
+            `-webkit-text-stroke-width: ${this.style.baseTextOutlineWidth}px;` +
             `-webkit-text-stroke-color: ${this.style.baseTextOutlineColour};`
         default:
           return ""
