@@ -97,6 +97,11 @@
   transform: scaleY(-1);
 }
 
+.flip-horizontal-and-vertical {
+  -webkit-transform: scale(-1, -1);
+  transform: scale(-1, -1);
+}
+
 .rotated {
   -webkit-transform: rotate(180deg);
   transform: rotate(180deg);

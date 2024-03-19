@@ -60,8 +60,15 @@
                     </v-expansion-panel-title>
                     <v-expansion-panel-text>
                       <v-row>
-                        <v-col md="6">
+                        <v-col md="5">
                           <v-text-field v-model="token.imageUrl" label="Image URL"></v-text-field>
+                        </v-col>
+                        <v-col md="5">
+                          <v-text-field v-model="token.reverseImageUrl" label="Reverse Image URL"></v-text-field>
+                        </v-col>
+                        <v-col md="2" v-if="token.reverseImageUrl">
+                          <div class="text-caption">Flip Reverse Image</div>
+                          <v-switch density="compact" v-model="token.flipReverseImage"></v-switch>
                         </v-col>
                         <v-col md="6">
                           <v-text-field v-model="token.name" label="Name" clearable></v-text-field>
@@ -253,7 +260,8 @@
                       <div v-if="sheet.numbered">{{ index + Number(sheet.startNumber) }}</div>
                       <div v-else>&nbsp;</div>
                     </div>
-                    <v-img :style="imageStyle" :class="`${token.size} flip-vertical`" :src="`${token.imageUrl}`" />
+                    <v-img v-if="token.reverseImageUrl" :style="imageStyle" :class="`${token.size} ${token.flipReverseImage ? 'flip-horizontal-and-vertical' : 'flip-vertical'}`" :src="`${token.reverseImageUrl}`" />
+                    <v-img v-else :style="imageStyle" :class="`${token.size} flip-vertical`" :src="`${token.imageUrl}`" />
                     <v-img :style="imageStyle" :class="`${token.size}`" :src="`${token.imageUrl}`" />
                     <div :style="`${tokenStyle} ${baseStyle}`" :class="`${token.size} ${token.size}-half-base`">
                       <div v-if="token.name">{{ token.name }}</div>
@@ -294,6 +302,8 @@ export default defineComponent({
   data: () => ({
     token: {
       imageUrl: "https://i.imgur.com/bYJ3gBl.png",
+      reverseImageUrl: null,
+      flipReverseImage: false,
       name: "Werewolf",
       size: "medium",
     },
